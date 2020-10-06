@@ -6,7 +6,7 @@ The application is a website where users can register, login and add deals that 
 
 You can check out deployed and working version (however only in Lithuanian language as internationalization isn't applied)
 
-[https://dealas-962d3.firebaseapp.com/](https://dealas-962d3.firebaseapp.com/)
+[https://nuts-family.firebaseapp.com/](https://dealas-962d3.firebaseapp.com/)
 
 ## Technical introduction
 

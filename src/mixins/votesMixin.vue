@@ -64,10 +64,10 @@ export default {
       }
     },
     setScore(dealId, score) {
-      if (get(this.$store.state.deals, 'deal')) {
-        this.$store.dispatch('deals/UPDATE_SCORE', score)
+      if (get(this.$store.state.category, 'deal')) {
+        this.$store.dispatch('category/UPDATE_SCORE', score)
       } else {
-        this.$store.dispatch('deals/UPDATE_DEAL_SCORE', { dealId, score })
+        this.$store.dispatch('category/UPDATE_DEAL_SCORE', { dealId, score })
       }
     }
   }

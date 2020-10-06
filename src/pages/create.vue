@@ -277,7 +277,7 @@ export default createComponent({
         timestamp: firestore.FieldValue.serverTimestamp()
       }
       try {
-        const dealId = await $store.dispatch('deals/CREATE_DEAL', {
+        const dealId = await $store.dispatch('category/CREATE_DEAL', {
           data,
           imageType,
           image

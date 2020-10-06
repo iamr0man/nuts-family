@@ -1,5 +1,5 @@
 import { isFunction, isNil, find, clone } from 'lodash'
-import { db, storage } from '@/plugins/firebase'
+import { db } from '@/plugins/firebase'
 
 export const state = () => ({
   deals: {},
@@ -26,35 +26,6 @@ export const getters = {
   getDeal: (state) => state.deal
 }
 
-const slugify = (string) => {
-  const a =
-    'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-  const b =
-    'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-  const p = new RegExp(a.split('').join('|'), 'g')
-
-  return (
-    string
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
-      .replace(/&/g, '-and-') // Replace & with 'and'
-      // eslint-disable-next-line no-useless-escape
-      .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-      // eslint-disable-next-line no-useless-escape
-      .replace(/\-\-+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, '')
-  ) // Trim - from end of text
-}
-
-const randomString = (stringCount = 5) => {
-  return Math.random()
-    .toString(36)
-    .substr(2, stringCount)
-}
-
 export const actions = {
   async GET_DEALS({ commit }) {
     const deals = await db.collection('nuts').get()
@@ -62,54 +33,6 @@ export const actions = {
       'SET_DEALS',
       deals.docs.map((deal) => ({ id: deal.id, ...deal.data() }))
     )
-  },
-  async CREATE_DEAL({ commit }, { data: deal, imageType, image }) {
-    if (deal === null) {
-    }
-    const dealId = `${slugify(deal.title)}-${randomString()}`
-    let imageURL = image
-    if (imageType === 'uploaded' && image) {
-      const storageRef = await storage.ref()
-      try {
-        const uploadTask = await storageRef
-          .child(`images/${dealId}.jpeg`)
-          .put(image)
-        imageURL = await uploadTask.ref.getDownloadURL()
-      } catch (error) {
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            break
-
-          case 'storage/canceled':
-            // User canceled the upload
-            break
-
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            break
-        }
-      }
-    }
-
-    const dealData = { ...deal, id: dealId, image: imageURL }
-
-    await db
-      .collection('deals')
-      .doc(dealId)
-      .set(dealData)
-
-    commit('ADD_DEAL', { id: dealId, dealData })
-    return dealId
-  },
-  async POST_COMMENT(data) {
-    try {
-      await db
-        .collection('deals')
-        .doc(data.dealId)
-        .collection('comments')
-        .add(data)
-    } catch (e) {}
   },
   async VIEW_DEAL({ commit }, dealId) {
     const dealRef = db.collection('nuts').doc(dealId)
