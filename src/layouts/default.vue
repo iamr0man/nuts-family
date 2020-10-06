@@ -25,11 +25,11 @@
       </div>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <client-only>
       <v-navigation-drawer v-model="rightDrawer" right temporary fixed>
         <v-list>

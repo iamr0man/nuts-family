@@ -1,12 +1,12 @@
 <template>
-  <nuxt-link :to="'details/' + deal.id" class="item-card">
+  <nuxt-link :to="'details/' + item.id" class="item-card">
     <img
       class="item-card__image"
       src="https://nutsbox.com.ua/media/catalog/product/cache/2/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/9/_/9_3.jpg"
       alt="image"
     />
     <h3 class="item-card__name">
-      {{ deal.name }}
+      {{ item.name }}
     </h3>
     <v-rating color="secondary" v-model="rating" />
     <WeightSelect />
@@ -104,7 +104,7 @@ export default {
   components: { WeightSelect },
   mixins: [votesMixin],
   props: {
-    deal: {
+    item: {
       type: Object,
       default: () => {}
     }
@@ -115,8 +115,9 @@ export default {
     }
   },
   methods: {
-    navigateToDeal(id) {
-      this.$router.push({ path: `/details/${id}` })
+    navigateToDeal() {
+      // TODO
+      // this.$router.push({ name: 'details', params: { _id: id } })
     }
   }
 }
@@ -131,6 +132,7 @@ export default {
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+  text-decoration: none;
   &__image {
     width: 100%;
   }

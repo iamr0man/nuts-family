@@ -26,7 +26,7 @@ export default {
   }),
   computed: {
     ...mapGetters('auth', { user: 'getUser' }),
-    ...mapGetters('category', { deal: 'getDeal', comments: 'getComments' })
+    ...mapGetters('category', { deal: 'getItem', comments: 'getComments' })
   },
 
   mounted() {

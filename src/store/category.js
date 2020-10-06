@@ -2,46 +2,50 @@ import { isFunction, isNil, find, clone } from 'lodash'
 import { db } from '@/plugins/firebase'
 
 export const state = () => ({
-  deals: {},
-  deal: null,
+  categoryName: 'nuts',
+  items: {},
+  item: null,
   comments: null
 })
 
 let unsubscribeComments = null
 
 export const getters = {
-  getDeals: (state) => (searchText) => {
-    if (searchText !== '' && !isNil(searchText)) {
-      const lowerSearchText = searchText.toLowerCase()
+  getSearchedItems: (state) => (searchedItems) => {
+    if (searchedItems !== '' && !isNil(searchedItems)) {
+      const lowerSearchText = searchedItems.toLowerCase()
       return state.deals.filter(
         (item) =>
           item.title.toLowerCase().includes(lowerSearchText) ||
           item.description.toLowerCase().includes(lowerSearchText)
       )
     } else {
-      return state.deals
+      return state.items
     }
   },
+  getDeals: (state) => {
+    return state.items
+  },
   getComments: (state) => state.comments,
-  getDeal: (state) => state.deal
+  getItem: (state) => state.item
 }
 
 export const actions = {
-  async GET_DEALS({ commit }) {
-    const deals = await db.collection('nuts').get()
+  async GET_DEALS({ commit, state }) {
+    const deals = await db.collection(state.categoryName).get()
     commit(
       'SET_DEALS',
       deals.docs.map((deal) => ({ id: deal.id, ...deal.data() }))
     )
   },
-  async VIEW_DEAL({ commit }, dealId) {
-    const dealRef = db.collection('nuts').doc(dealId)
+  async VIEW_DEAL({ commit, state }, dealId) {
+    const dealRef = db.collection(state.categoryName).doc(dealId)
 
     // LISTENING TO COMMENT COLLECTION CHANGE WONT WORK HERE
     // THIS IS CALLED BY SERVER SIDE RENDERING
 
     const deal = await dealRef.get()
-    commit('SET_DEAL', deal.data())
+    commit('SET_ITEM', deal.data())
   },
   INITIATE_LISTENING_TO_COMMENTS({ commit }, dealId) {
     const dealRef = db.collection('deals').doc(dealId)
@@ -74,15 +78,18 @@ export const actions = {
 }
 
 export const mutations = {
+  SET_CATEGORY(state, data) {
+    state.categoryName = data
+  },
   SET_DEALS(state, data) {
-    state.deals = data
+    state.items = data
   },
   ADD_DEAL(state, data) {
     const { id, deal } = data
-    state.deals[id] = deal
+    state.items[id] = deal
   },
   SET_DEAL(state, data) {
-    state.deal = data
+    state.item = data
   },
   SET_COMMENTS(state, data) {
     state.comments = data

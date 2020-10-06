@@ -18,7 +18,14 @@
       <!--      </v-col>-->
     </v-row>
     <v-row class="pt-5">
-      <v-col v-for="v in categories" :key="v" cols="12" sm="6" md="4" lg="3">
+      <v-col
+        v-for="v in categories"
+        :key="v.value"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+      >
         <div class="home__category" @click="setCategory(v.value)">
           <span class="name secondary">{{ v.name }}</span>
         </div>
@@ -58,9 +65,9 @@ export default {
     // }
   },
   methods: {
-    // async setCategory(name) {
-    //   this.
-    // }
+    async setCategory(name) {
+      await this.$router.push(`/catalog/${name}`)
+    }
     // debounceSearch(event) {
     //   clearTimeout(this.debounce)
     //   this.debounce = setTimeout(() => {
