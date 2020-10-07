@@ -69,7 +69,13 @@
                   transition="dialog-bottom-transition"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                    <v-btn
+                      class="my-2"
+                      color="primary"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                    >
                       Написати відгук
                     </v-btn>
                   </template>
@@ -191,7 +197,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .comment-container {
   background: rgba(56, 189, 207, 0.05);
   border-radius: 5px;

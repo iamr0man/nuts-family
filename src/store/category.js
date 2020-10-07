@@ -11,20 +11,17 @@ export const state = () => ({
 let unsubscribeComments = null
 
 export const getters = {
-  getSearchedItems: (state) => (searchedItems) => {
+  getItems: (state) => (searchedItems) => {
     if (searchedItems !== '' && !isNil(searchedItems)) {
       const lowerSearchText = searchedItems.toLowerCase()
-      return state.deals.filter(
+      return state.items.filter(
         (item) =>
-          item.title.toLowerCase().includes(lowerSearchText) ||
-          item.description.toLowerCase().includes(lowerSearchText)
+          item.name.toLowerCase().includes(lowerSearchText) ||
+          item.description.shortDetails.toLowerCase().includes(lowerSearchText)
       )
     } else {
       return state.items
     }
-  },
-  getDeals: (state) => {
-    return state.items
   },
   getComments: (state) => state.comments,
   getItem: (state) => state.item
@@ -32,10 +29,10 @@ export const getters = {
 
 export const actions = {
   async GET_DEALS({ commit, state }) {
-    const deals = await db.collection(state.categoryName).get()
+    const items = await db.collection(state.categoryName).get()
     commit(
       'SET_DEALS',
-      deals.docs.map((deal) => ({ id: deal.id, ...deal.data() }))
+      items.docs.map((deal) => ({ id: deal.id, ...deal.data() }))
     )
   },
   async VIEW_DEAL({ commit, state }, dealId) {

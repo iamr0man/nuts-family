@@ -128,7 +128,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 body {
   background-color: #fff;
 }
@@ -143,6 +143,10 @@ body {
 .triangle-background {
   position: fixed;
   top: 0;
+}
+
+.v-container {
+  background: linear-gradient(to right, #9b9b9b, #d0d0d0);
 }
 /* .v-toolbar {
   box-shadow: none !important;

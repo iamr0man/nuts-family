@@ -14,12 +14,15 @@ export default {
   props: ['review'],
   computed: {
     parsedDate() {
-      // const d = new Date()
-      // return new Date(
-      //   parseInt(parts[2], 10),
-      //   parseInt(parts[1], 10) - 1,
-      //   parseInt(parts[0], 10)
-      // )
+      const d = new Date(this.review.date)
+      const mm = new Date(d).getMonth() + 1
+      const dd = new Date(d).getDate()
+
+      return [
+        (dd > 9 ? '' : '0') + dd,
+        (mm > 9 ? '' : '0') + mm,
+        d.getFullYear()
+      ].join('.')
     }
   }
 }
@@ -34,7 +37,7 @@ export default {
     display: flex;
     justify-content: space-between;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 18px;
   }
 }
 </style>

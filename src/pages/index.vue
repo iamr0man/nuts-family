@@ -1,22 +1,5 @@
 <template>
   <div class="home">
-    <v-row>
-      <!--      <v-col xs="12" lg="12" xs12 class="d-flex flex-column">-->
-      <!--        <div>-->
-      <!--          <v-text-field-->
-      <!--            label="Пошук"-->
-      <!--            single-line-->
-      <!--            clearable-->
-      <!--            solo-->
-      <!--            persistent-hint-->
-      <!--            hide-details-->
-      <!--            @input="debounceSearch"-->
-      <!--          >-->
-      <!--            <v-icon class="mdi mdi-magnify" />-->
-      <!--          </v-text-field>-->
-      <!--        </div>-->
-      <!--      </v-col>-->
-    </v-row>
     <v-row class="pt-5">
       <v-col
         v-for="v in categories"
@@ -35,11 +18,7 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
 export default {
-  // async fetch(ctx) {
-  // await ctx.store.dispatch('deals/GET_DEALS')
-  // },
   data: () => ({
     categories: [
       {
@@ -48,32 +27,18 @@ export default {
       },
       {
         name: 'Сухофрукти',
-        value: 'dried-fruits'
+        value: 'druid-fruits'
       },
       {
         name: 'Подарункові набори',
         value: 'gift-sets'
       }
-    ],
-    searchInput: null,
-    debounce: null
+    ]
   }),
-  computed: {
-    // ...mapGetters('deals', { searchDeals: 'getDeals' }),
-    // searchedDeals() {
-    //   return this.searchDeals(this.searchInput)
-    // }
-  },
   methods: {
     async setCategory(name) {
       await this.$router.push(`/catalog/${name}`)
     }
-    // debounceSearch(event) {
-    //   clearTimeout(this.debounce)
-    //   this.debounce = setTimeout(() => {
-    //     this.searchInput = event
-    //   }, 600)
-    // }
   },
   head() {
     return {
