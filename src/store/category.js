@@ -64,7 +64,7 @@ export const actions = {
   },
   LEAVE_DEAL({ commit }) {
     if (isFunction(unsubscribeComments)) unsubscribeComments()
-    commit('SET_DEAL', null)
+    commit('SET_ITEM', null)
   },
   UPDATE_SCORE({ commit }, score) {
     commit('SET_SCORE', score)
@@ -88,7 +88,7 @@ export const mutations = {
     const { id, deal } = data
     state.items[id] = deal
   },
-  SET_DEAL(state, data) {
+  SET_ITEM(state, data) {
     state.item = data
   },
   SET_COMMENTS(state, data) {

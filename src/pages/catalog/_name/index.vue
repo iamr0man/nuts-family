@@ -6,7 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ItemCard from '../../components/ItemCard'
+import ItemCard from '../../../components/ItemCard'
 export default {
   components: {
     ItemCard

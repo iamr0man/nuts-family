@@ -1,18 +1,13 @@
 <template>
-  <nuxt-link :to="'details/' + item.id" class="item-card">
-    <img
-      class="item-card__image"
-      src="https://nutsbox.com.ua/media/catalog/product/cache/2/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/9/_/9_3.jpg"
-      alt="image"
-    />
+  <nuxt-link :to="link" class="item-card">
+    <img class="item-card__image" :src="item.image" alt="image" />
     <h3 class="item-card__name">
       {{ item.name }}
     </h3>
-    <v-rating color="secondary" v-model="rating" />
-    <WeightSelect />
-    <v-btn class="item-card__action primary" @click="navigateToDeal"
-      >Купити</v-btn
-    >
+    <v-rating v-model="rating" color="secondary" />
+    <WeightSelect :weight="weight" @changeWeight="updateWeight" />
+    <p class="item-card__price">{{ price }} грн.</p>
+    <v-btn class="item-card__action primary">Купити</v-btn>
   </nuxt-link>
   <!--  </v-card>-->
   <!--  <v-hover>-->
@@ -97,21 +92,18 @@
 </template>
 
 <script>
-import votesMixin from '@/mixins/votesMixin'
-// import DisplayNameComponent from '@/components/DisplayNameComponent'
-import WeightSelect from '@/components/WeightSelect'
+import priceMixin from '@/mixins/priceMixin'
 export default {
-  components: { WeightSelect },
-  mixins: [votesMixin],
+  mixins: [priceMixin],
   props: {
     item: {
       type: Object,
       default: () => {}
     }
   },
-  data() {
-    return {
-      rating: 5
+  computed: {
+    link() {
+      return this.$route.params.name + '/' + this.item.id
     }
   },
   methods: {
@@ -135,6 +127,11 @@ export default {
   text-decoration: none;
   &__image {
     width: 100%;
+  }
+  &__price {
+    font-weight: 900;
+    font-size: 20px;
+    color: #000;
   }
   &__action {
     margin: 10px 0;
