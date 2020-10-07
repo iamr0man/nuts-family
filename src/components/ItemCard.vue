@@ -4,7 +4,7 @@
     <h3 class="item-card__name">
       {{ item.name }}
     </h3>
-    <v-rating v-model="rating" color="secondary" />
+    <v-rating :value="countAvgStars" readonly color="secondary" />
     <WeightSelect :weight="weight" @changeWeight="updateWeight" />
     <p class="item-card__price">{{ price }} грн.</p>
     <v-btn class="item-card__action primary">Купити</v-btn>

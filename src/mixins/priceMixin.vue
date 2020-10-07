@@ -5,7 +5,6 @@ export default {
   components: { WeightSelect },
   data() {
     return {
-      rating: 5,
       weight: 100
     }
   },
@@ -15,6 +14,9 @@ export default {
     },
     price() {
       return this.item.price[this.weight]
+    },
+    countAvgStars() {
+      return this.item.reviews.map((v) => v.rating) / this.item.reviews.length
     }
   },
   methods: {
