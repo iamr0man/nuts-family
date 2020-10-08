@@ -11,7 +11,12 @@
 
 <script>
 export default {
-  props: ['review'],
+  props: {
+    review: {
+      type: Object,
+      default: () => {}
+    }
+  },
   computed: {
     parsedDate() {
       const d = new Date(this.review.date)

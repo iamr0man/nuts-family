@@ -37,7 +37,7 @@ export default (context) => {
   return new Promise((resolve, reject) => {
     try {
       auth.onAuthStateChanged((user) => {
-        resolve(store.dispatch('auth/fetchUser', user))
+        resolve(store.dispatch('auth/FETCH_USER', user))
       })
     } catch (error) {
       reject(error)

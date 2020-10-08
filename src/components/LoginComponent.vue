@@ -36,7 +36,9 @@
 <script>
 import { auth } from 'firebase'
 export default {
-  props: ['isRegistred'],
+  props: {
+    isRegistred: Boolean
+  },
   data: () => ({
     error: {
       active: false,

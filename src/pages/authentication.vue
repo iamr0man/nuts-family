@@ -63,22 +63,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.google-signin:focus {
-  background-image: url('/social/google/btn_google_signin_light_focus_web.png');
-}
-.google-signin {
-  background-image: url('/social/google/btn_google_signin_light_normal_web.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  width: 191px;
-  height: 46px;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-.google-signin:active {
-  background-image: url('/social/google/btn_google_signin_light_focus_web.png');
-}
-</style>
+<style scoped></style>

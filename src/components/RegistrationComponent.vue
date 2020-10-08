@@ -77,14 +77,6 @@ export default {
     ]
   }),
   methods: {
-    conditionsAgree() {
-      this.dialog = false
-      this.checkbox = true
-    },
-    conditionsDisagree() {
-      this.dialog = false
-      this.checkbox = false
-    },
     async validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true
@@ -94,13 +86,13 @@ export default {
           this.email,
           this.password
         )
+        await userData.user.updateProfile({
+          displayName: this.name + ' ' + this.surname
+        })
         const userInstanceInfo = {
-          email: this.email,
-          name: this.name,
-          surname: this.surname,
-          sex: null,
-          address: {},
-          uid: userData.user.uid
+          email: userData.user.email,
+          uid: userData.user.uid,
+          displayName: userData.user.displayName
         }
         await this.$store.dispatch(
           'auth/CREATE_USER_INSTANCE',
