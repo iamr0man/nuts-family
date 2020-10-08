@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <v-card flat class="login">
     <v-snackbar
       v-model="error.active"
       color="error"
@@ -13,22 +13,21 @@
     </v-snackbar>
     <v-card-title primary-title>Вхід</v-card-title>
     <v-card-text>
-      <v-form ref="form" lazy-validation>
+      <v-form ref="form" class="login__form" lazy-validation>
         <v-text-field
           v-model="email"
           :rules="emailRules"
           label="Ел. пошта"
           required
-        ></v-text-field>
-
+        />
         <v-text-field
           v-model="password"
           label="Пароль"
           type="password"
           required
-        ></v-text-field>
-
-        <v-btn color="primary" class="mr-4" @click="login"> Увійти </v-btn>
+        />
+        <v-btn color="primary" class="my-3" @click="login">Увійти</v-btn>
+        <v-btn @click="$emit('changeForm', false)">Зареєструватися</v-btn>
       </v-form>
     </v-card-text>
   </v-card>
@@ -37,6 +36,7 @@
 <script>
 import { auth } from 'firebase'
 export default {
+  props: ['isRegistred'],
   data: () => ({
     error: {
       active: false,
@@ -62,3 +62,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.login {
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>

@@ -4,14 +4,19 @@
       <v-card>
         <v-card-text class="pa-5">
           <v-row>
-            <v-col cols="12" md="5">
+            <v-col v-if="!isRegistered" cols="12" md="5">
               <div class="">
-                <RegistrationComponent />
+                <RegistrationComponent
+                  :is-registered="isRegistered"
+                  @changeForm="changeForm"
+                />
               </div>
             </v-col>
-            <v-col md="2" />
-            <v-col cols="12" md="5">
-              <LoginComponent />
+            <v-col v-else cols="12" md="5">
+              <LoginComponent
+                :is-registered="isRegistered"
+                @changeForm="changeForm"
+              />
             </v-col>
           </v-row>
         </v-card-text>
@@ -29,7 +34,13 @@ export default {
     RegistrationComponent,
     LoginComponent
   },
+  data: () => ({
+    isRegistered: true
+  }),
   methods: {
+    changeForm(v) {
+      this.isRegistered = v
+    },
     async signIn(socialType) {
       let provider = null
       switch (socialType) {

@@ -1,10 +1,15 @@
 <template>
-  <v-card flat>
+  <v-card flat class="registration">
     <v-card-title primary-title>
       РЕЄСТРАЦІЯ
     </v-card-title>
     <v-card-text>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form
+        ref="form"
+        v-model="valid"
+        class="registration__form"
+        lazy-validation
+      >
         <v-text-field
           v-model="surname"
           :rules="nameRules"
@@ -27,43 +32,25 @@
           :persistent-hint="true"
           required
         />
-        <div>
+        <p class="my-2">
           Реєструючись, ви погоджуєтеся з<a
             @click.stop="$router.push('/terms')"
           >
             угодою користувача</a
           >
-        </div>
+        </p>
         <v-btn
           :disabled="!valid"
           color="primary"
-          class="mr-4"
+          class="my-3"
           @click="validate"
         >
           Зареєструватися
         </v-btn>
+        <v-btn :disabled="!valid" @click="$emit('changeForm', true)">
+          Я вже зареєстрований
+        </v-btn>
       </v-form>
-      <v-dialog v-model="dialog" persistent max-width="500">
-        <v-card>
-          <v-card-title class="headline">
-            Bendros naudojimosi paslaugomis taisyklės?
-          </v-card-title>
-          <v-card-text>
-            <ul>
-              <li>
-                Įkeldami nuorodas nesiekiate piktybiškai pakenkti portalui.
-              </li>
-              <li>
-                Įkeliate tinkamai paruoštą informaciją nebandant pakenkti
-                portalo vartotojams.
-              </li>
-              <li>
-                Pažadate dalintis nuolaidomis k
-              </li>
-            </ul>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-card-text>
   </v-card>
 </template>
@@ -107,18 +94,19 @@ export default {
           this.email,
           this.password
         )
-        await userData.user.updateProfile({
-          displayName: this.name
-        })
-        this.$store.dispatch('auth/UPDATE_LOCAL_NAME', this.name)
         const userInstanceInfo = {
-          email: userData.user.email,
-          uid: userData.user.uid,
-          displayName: userData.user.displayName
+          email: this.email,
+          name: this.name,
+          surname: this.surname,
+          sex: null,
+          address: {},
+          uid: userData.user.uid
         }
-        this.$store.dispatch('auth/CREATE_USER_INSTANCE', userInstanceInfo)
-
-        this.$router.push('/')
+        await this.$store.dispatch(
+          'auth/CREATE_USER_INSTANCE',
+          userInstanceInfo
+        )
+        await this.$router.push('/')
       } catch (error) {
         this.snackbar = true
         // Handle Errors here.
@@ -130,4 +118,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.registration {
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>

@@ -15,23 +15,10 @@ export const actions = {
   fetchUser({ commit }, user) {
     commit('SET_LOGGED_IN', user !== null)
     if (user) {
-      commit('SET_USER_DATA', {
-        email: user.email,
-        displayName: user.displayName,
-        uid: user.uid
-      })
+      commit('SET_USER_DATA', user)
     } else {
       commit('SET_USER_DATA', null)
     }
-  },
-  UPDATE_LOCAL_NAME({ commit, state }, name) {
-    if (
-      name !== null ||
-      name !== undefined ||
-      name !== '' ||
-      state.user.data !== null
-    )
-      commit('SET_LOCAL_NAME', name)
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_USER_INSTANCE({ commit }, userData) {
@@ -48,8 +35,5 @@ export const mutations = {
   },
   SET_USER_DATA(state, data) {
     state.user.data = data
-  },
-  SET_LOCAL_NAME(state, name) {
-    state.user.data.displayName = name
   }
 }
