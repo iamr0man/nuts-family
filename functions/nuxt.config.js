@@ -8,7 +8,7 @@ module.exports = {
    */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || 'DEALAS',
+    title: process.env.npm_package_name || 'NUTSFAMILLY',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
