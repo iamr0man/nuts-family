@@ -36,7 +36,12 @@
         </div>
         <div class="product-page__actions">
           <p class="product-page__label label">Кількість:</p>
-          <v-text-field v-model="amount" class="product-page__amount" solo />
+          <v-text-field
+            v-model="amount"
+            :rules="amountRules"
+            class="product-page__amount"
+            solo
+          />
           <v-btn class="product-page__buy" color="primary">Купити</v-btn>
         </div>
       </div>
@@ -122,8 +127,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { firestore } from 'firebase'
-import { isNil, get } from 'lodash'
+// import { firestore } from 'firebase'
+// import { isNil, get } from 'lodash'
 import priceMixin from '~/mixins/priceMixin'
 import votesMixin from '~/mixins/votesMixin'
 import WeightSelect from '~/components/WeightSelect'
@@ -144,7 +149,6 @@ export default {
   },
   data: () => ({
     commentContent: null,
-    amount: 1,
     additional: ['Відгуки', 'Опис'],
     dialog: false,
     rating: 0,
@@ -162,26 +166,25 @@ export default {
       return this.item.reviews.length > 1 ? 'ВІДГУКИ' : 'ВІДГУК'
     }
   },
-
-  mounted() {
-    this.$store.dispatch('category/INITIATE_LISTENING_TO_COMMENTS', this.itemId)
-  },
-  beforeDestroy() {
-    this.$store.dispatch('category/LEAVE_DEAL')
-  },
-  methods: {
-    postComment() {
-      const userName = get(this.user.data, 'displayName')
-      const commentData = {
-        dealId: this.itemId,
-        userId: this.user.data.uid,
-        content: this.commentContent,
-        timestamp: firestore.FieldValue.serverTimestamp(),
-        userName: isNil(userName) ? 'Not disclosed' : userName
-      }
-      this.$store.dispatch('category/POST_COMMENT', commentData)
-    }
-  },
+  // mounted() {
+  //   this.$store.dispatch('category/INITIATE_LISTENING_TO_COMMENTS', this.itemId)
+  // },
+  // beforeDestroy() {
+  //   this.$store.dispatch('category/LEAVE_DEAL')
+  // },
+  // methods: {
+  //   postComment() {
+  //     const userName = get(this.user.data, 'displayName')
+  //     const commentData = {
+  //       dealId: this.itemId,
+  //       userId: this.user.data.uid,
+  //       content: this.commentContent,
+  //       timestamp: firestore.FieldValue.serverTimestamp(),
+  //       userName: isNil(userName) ? 'Not disclosed' : userName
+  //     }
+  //     this.$store.dispatch('category/POST_COMMENT', commentData)
+  //   }
+  // },
   head() {
     return {
       title: `NutsFamily - ${this.item.name}`,
@@ -197,7 +200,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .comment-container {
   background: rgba(56, 189, 207, 0.05);
   border-radius: 5px;
@@ -226,6 +229,9 @@ a.comment-link {
         justify-content: space-between;
         align-items: center;
         #{$self}__rating {
+          .v-rating .v-icon {
+            padding: 0 !important;
+          }
           #{$self}__reviews-link {
             margin-left: 4px;
           }
@@ -248,22 +254,13 @@ a.comment-link {
         display: flex;
         justify-content: flex-start;
         align-items: baseline;
+
+        .v-input__slot {
+          width: 70px !important;
+          margin-left: 10px;
+        }
       }
     }
   }
-}
-
-.v-application p {
-  margin-bottom: 0 !important;
-}
-
-.v-rating .v-icon {
-  padding: 0 !important;
-}
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
-  > .v-input__control
-  > .v-input__slot {
-  width: 70px;
-  margin-left: 10px;
 }
 </style>

@@ -1,5 +1,6 @@
+import { v4 as uuidv4 } from 'uuid'
+// import { FieldValue } from 'firebase-admin'
 import { db } from '~/plugins/firebase'
-import { slugify, randomString } from '~/plugins/utility'
 
 export const state = () => ({
   user: {
@@ -37,22 +38,13 @@ export const actions = {
       commit('SET_PROFILE', profileData)
     }
   },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async CREATE_PROFILE({ commit, state, rootGetters }, profile) {
-    if (profile === null) {
-      return
-    }
-    const profileId = `${slugify(new Date())}-${randomString()}`
-    const profileData = {
-      id: profileId,
-      userId: rootGetters['auth/getUser'].data.uid,
-      ...profile
-    }
-
-    await db
-      .collection('profiles')
-      .doc(state.user.data.uid)
-      .set(profileData)
+  async UPDATE_PROFILE({ state }, data) {
+    if (Object.entries(data).length < 1) return
+    const profileRef = await db.collection('profiles').doc(state.user.data.uid)
+    // if (data.city) {
+    //   profileRef.update({ addresses: FieldValue.arrayUnion(data) })
+    // }
+    profileRef.update(...data)
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_USER_INSTANCE({ commit }, userData) {
@@ -60,6 +52,21 @@ export const actions = {
       .collection('users')
       .doc(userData.uid)
       .set(userData)
+  },
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async CREATE_PROFILE({ state }, userId) {
+    const profileData = {
+      id: uuidv4(),
+      userId,
+      sex: null,
+      speakingLanguage: null,
+      addresses: []
+    }
+    await db
+      .collection('profiles')
+      .doc(state.user.data.uid)
+      .set(profileData)
   }
 }
 
@@ -72,5 +79,8 @@ export const mutations = {
   },
   SET_PROFILE(state, data) {
     state.profile = data
+  },
+  ADD_ADDRESS(state, data) {
+    state.profile.addresses.push(data)
   }
 }

@@ -1,4 +1,4 @@
-import { isFunction, isNil, find, clone } from 'lodash'
+import { isFunction, find, clone } from 'lodash'
 import { db } from '@/plugins/firebase'
 
 export const state = () => ({
@@ -12,7 +12,7 @@ let unsubscribeComments = null
 
 export const getters = {
   getItems: (state) => (searchedItems) => {
-    if (searchedItems !== '' && !isNil(searchedItems)) {
+    if (searchedItems) {
       const lowerSearchText = searchedItems.toLowerCase()
       return state.items.filter(
         (item) =>

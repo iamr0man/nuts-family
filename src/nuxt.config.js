@@ -42,7 +42,8 @@ module.exports = {
     '@/plugins/composition-api.js',
     '@/plugins/firebase.js',
     '@/plugins/filters.js',
-    '@/plugins/vuetify.js'
+    '@/plugins/vuetify.js',
+    '@/plugins/repository.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -71,7 +72,9 @@ module.exports = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://api.novaposhta.ua/v2.0/json/'
+  },
   http: {
     proxyHeaders: false
   },

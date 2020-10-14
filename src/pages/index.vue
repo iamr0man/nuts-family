@@ -42,7 +42,7 @@ export default {
   },
   head() {
     return {
-      title: '',
+      title: 'NutsFamily',
       meta: [
         {
           hid: 'description',

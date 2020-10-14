@@ -19,7 +19,6 @@ import DataBlock from '~/components/DataBlock'
 import AddressBlock from '~/components/AddressBlock'
 import ContactBlock from '~/components/ContactBlock'
 export default {
-  middleware: 'auth',
   components: {
     DataBlock,
     AddressBlock,
