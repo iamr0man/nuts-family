@@ -8,9 +8,32 @@
     </div>
     <div class="block__content">
       <div class="block__row">
-        <v-btn v-if="!isAdding" light @click="isAdding = true">
-          <v-icon class="mdi mdi-plus-circle-outline" /> Додати адресу
-        </v-btn>
+        <div v-for="v in addresses" :key="v.id" class="block__addresses">
+          <v-text-field readonly :value="v.city" label="Місто" />
+          <v-text-field readonly :value="v.addressType" label="Звідки" />
+          <v-text-field
+            v-if="v.addressType === 'Відділення'"
+            readonly
+            :value="v.warehouse"
+            label="Відділення"
+          />
+          <div v-else class="block__nested-fields">
+            <v-text-field readonly :value="v.address" label="Вулиця" />
+            <v-row>
+              <v-col cols="6">
+                <v-text-field readonly :value="v.house" label="Будинок" />
+              </v-col>
+              <v-col cols="6">
+                <v-text-field readonly :value="v.apartment" label="Квартира" />
+              </v-col>
+            </v-row>
+            <v-text-field
+              readonly
+              :value="v.comment"
+              label="Коментар до адресу"
+            />
+          </div>
+        </div>
         <div v-if="isAdding" class="block__field">
           <v-autocomplete
             v-model="city"
@@ -48,6 +71,9 @@
             <v-text-field v-model="comment" label="Коментар до адресу" />
           </div>
         </div>
+        <v-btn v-if="!isAdding" light @click="isAdding = true">
+          <v-icon class="mdi mdi-plus-circle-outline" /> Додати адресу
+        </v-btn>
       </div>
     </div>
     <div v-if="isAdding" class="block__actions">

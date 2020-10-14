@@ -65,15 +65,16 @@ export default {
     dialog: false,
     user: auth().currentUser,
     nameRules: [
-      (v) => !!v || 'Šis laukelis privalo būti užpildytas',
-      (v) => (v && v.length <= 20) || 'Name must be less than 20 characters'
+      (v) => !!v || 'Це поле повинно бути заповнене',
+      (v) =>
+        (v && v.length <= 20) || 'Це поле має містити не більше 20 символів'
     ],
     password: '',
-    passwordRules: [(v) => !!v || 'Šis laukelis privalo būti užpildytas'],
+    passwordRules: [(v) => !!v || 'Це поле повинно бути заповнене'],
     email: '',
     emailRules: [
-      (v) => !!v || 'E-mail is required',
-      (v) => /.+@.+\..+/.test(v) || 'Šis laukelis privalo būti užpildytas'
+      (v) => !!v || 'Це поле повинно бути заповнене',
+      (v) => /.+@.+\..+/.test(v) || 'Заповніть це поле в правильному форматі'
     ]
   }),
   methods: {

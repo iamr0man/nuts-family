@@ -78,7 +78,7 @@ export default {
       await this.auth.updateProfile({
         displayName: [this.surname, this.name].join(' ')
       })
-      await this.$store.dispatch('auth/CREATE_PROFILE', profile)
+      await this.$store.dispatch('auth/UPDATE_PROFILE', profile)
       this.isDataChange = false
     }
   }

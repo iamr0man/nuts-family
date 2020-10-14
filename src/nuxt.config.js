@@ -39,6 +39,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '@/plugins/auth.js',
     '@/plugins/composition-api.js',
     '@/plugins/firebase.js',
     '@/plugins/filters.js',

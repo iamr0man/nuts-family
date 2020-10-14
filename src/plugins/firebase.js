@@ -28,6 +28,7 @@ if (!firebase.apps.length) {
 // firebase.firestore().settings({ timestampsInSnapshots: true })
 
 export const db = firebase.firestore()
+export const FieldValue = firebase.firestore.FieldValue
 export const auth = firebase.auth()
 export const storage = firebase.storage()
 

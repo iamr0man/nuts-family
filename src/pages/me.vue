@@ -69,6 +69,12 @@ export default {
       .block__row {
         display: flex;
         flex-direction: column;
+        .block__addresses {
+          margin: 10px;
+          padding: 5px 20px;
+          border: 1px solid #444444;
+          border-radius: 30px;
+        }
         .block__label.label {
           margin-bottom: 8px !important;
           font-size: 12px;

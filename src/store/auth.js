@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 // import { FieldValue } from 'firebase-admin'
-import { db } from '~/plugins/firebase'
+import { db, FieldValue } from '~/plugins/firebase'
 
 export const state = () => ({
   user: {
@@ -41,10 +41,11 @@ export const actions = {
   async UPDATE_PROFILE({ state }, data) {
     if (Object.entries(data).length < 1) return
     const profileRef = await db.collection('profiles').doc(state.user.data.uid)
-    // if (data.city) {
-    //   profileRef.update({ addresses: FieldValue.arrayUnion(data) })
-    // }
-    profileRef.update(...data)
+    if (data.city) {
+      profileRef.update({ addresses: FieldValue.arrayUnion(data) })
+    } else if (data.sex || data.speakingLanguage) {
+      profileRef.update({ ...data })
+    }
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_USER_INSTANCE({ commit }, userData) {

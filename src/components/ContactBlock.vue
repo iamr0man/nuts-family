@@ -13,13 +13,13 @@
       />
     </div>
     <div class="block__content">
-      <div class="block__row">
-        <p class="block__label label">Телефон</p>
-        <p v-if="!isContactsChange" class="block__field field">
-          {{ handleValue(phoneNumber) }}
-        </p>
-        <v-text-field v-else v-model="phoneNumber" solo />
-      </div>
+      <!--      <div class="block__row">-->
+      <!--        <p class="block__label label">Телефон</p>-->
+      <!--        <p v-if="!isContactsChange" class="block__field field">-->
+      <!--          {{ handleValue(phoneNumber) }}-->
+      <!--        </p>-->
+      <!--        <v-text-field v-else v-model="phoneNumber" solo />-->
+      <!--      </div>-->
       <div class="block__row">
         <p class="block__label label">Електронна пошта</p>
         <p v-if="!isContactsChange" class="block__field field">
@@ -57,7 +57,12 @@ export default {
       // await this.auth.updateProfile({
       //   phoneNumber: this.phoneNumber
       // })
+      // await this.auth.updateProfile({
+      //   email: this.email,
+      //   phoneNumber: this.phoneNumber
+      // })
       await this.auth.updateEmail(this.email)
+      this.isContactsChange = false
     }
   }
 }
