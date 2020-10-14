@@ -34,14 +34,10 @@ export const storage = firebase.storage()
 
 export default (context) => {
   const { store } = context
-
-  return new Promise((resolve, reject) => {
-    try {
-      auth.onAuthStateChanged((user) => {
-        resolve(store.dispatch('auth/FETCH_USER', user))
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
+  try {
+    auth.onAuthStateChanged((user) => {
+      store.dispatch('auth/FETCH_USER', user)
+      store.dispatch('auth/GET_PROFILE')
+    })
+  } catch (error) {}
 }

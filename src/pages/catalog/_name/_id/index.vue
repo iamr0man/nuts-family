@@ -84,7 +84,7 @@
                       Написати відгук
                     </v-btn>
                   </template>
-                  <v-card>
+                  <v-card class="pa-4">
                     <v-toolbar dark color="primary">
                       <v-btn icon dark @click="dialog = false">
                         <v-icon>mdi-close</v-icon>
@@ -103,20 +103,22 @@
                       <p class="product-page__label label">
                         Ваше ім'я та прізвище:
                       </p>
-                      <v-text-field v-model="userName" />
+                      <v-text-field readonly :value="user.data.displayName" />
                     </div>
                     <div class="product-page__input">
                       <p class="product-page__label label">
                         Електронна пошта:
                       </p>
-                      <v-text-field v-model="email" />
+                      <v-text-field readonly :value="user.data.email" />
                     </div>
                     <v-btn>Скасувати</v-btn>
-                    <v-btn color="primary">Залишити відгук</v-btn>
+                    <v-btn color="primary" @click="postComment"
+                      >Залишити відгук</v-btn
+                    >
                   </v-card>
                 </v-dialog>
               </v-row>
-              <Review v-for="(v, i) in item.reviews" :key="i" :review="v" />
+              <Review v-for="(v, i) in reviews" :key="i" :review="v" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -127,8 +129,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { firestore } from 'firebase'
-// import { isNil, get } from 'lodash'
+import { FieldValue } from '~/plugins/firebase'
 import priceMixin from '~/mixins/priceMixin'
 import votesMixin from '~/mixins/votesMixin'
 import WeightSelect from '~/components/WeightSelect'
@@ -142,7 +143,7 @@ export default {
   mixins: [priceMixin, votesMixin],
   async asyncData(ctx) {
     const itemId = ctx.params.id
-    await ctx.store.dispatch('category/VIEW_DEAL', itemId)
+    await ctx.store.dispatch('category/VIEW_ITEM', itemId)
     return {
       itemId
     }
@@ -152,13 +153,12 @@ export default {
     additional: ['Відгуки', 'Опис'],
     dialog: false,
     rating: 0,
-    comment: 0,
-    userName: '',
-    email: '' // TODO computed
+    comment: '',
+    reviews: []
   }),
   computed: {
-    ...mapGetters('auth', { user: 'getUser' }),
-    ...mapGetters('category', { item: 'getItem', comments: 'getComments' }),
+    ...mapGetters('auth', { user: 'getUser', profile: 'getProfile' }),
+    ...mapGetters('category', { item: 'getItem' }),
     isAvailable() {
       return this.item.isAvailable ? 'Є в наявності' : 'Немає в наявності'
     },
@@ -166,25 +166,26 @@ export default {
       return this.item.reviews.length > 1 ? 'ВІДГУКИ' : 'ВІДГУК'
     }
   },
-  // mounted() {
-  //   this.$store.dispatch('category/INITIATE_LISTENING_TO_COMMENTS', this.itemId)
-  // },
-  // beforeDestroy() {
-  //   this.$store.dispatch('category/LEAVE_DEAL')
-  // },
-  // methods: {
-  //   postComment() {
-  //     const userName = get(this.user.data, 'displayName')
-  //     const commentData = {
-  //       dealId: this.itemId,
-  //       userId: this.user.data.uid,
-  //       content: this.commentContent,
-  //       timestamp: firestore.FieldValue.serverTimestamp(),
-  //       userName: isNil(userName) ? 'Not disclosed' : userName
-  //     }
-  //     this.$store.dispatch('category/POST_COMMENT', commentData)
-  //   }
-  // },
+  mounted() {
+    this.reviews = this.profile.reviews
+  },
+  beforeDestroy() {
+    this.$store.dispatch('category/LEAVE_ITEM')
+  },
+  methods: {
+    postComment() {
+      const userName = this.user.data.displayName
+      const commentData = {
+        itemId: this.itemId,
+        userName,
+        rating: this.rating,
+        comment: this.comment,
+        timestamp: FieldValue.serverTimestamp()
+      }
+      this.$store.dispatch('category/POST_COMMENT', commentData)
+      this.reviews = this.profile.reviews
+    }
+  },
   head() {
     return {
       title: `NutsFamily - ${this.item.name}`,

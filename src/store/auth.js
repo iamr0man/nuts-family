@@ -38,14 +38,17 @@ export const actions = {
       commit('SET_PROFILE', profileData)
     }
   },
-  async UPDATE_PROFILE({ state }, data) {
+  async UPDATE_PROFILE({ state, commit }, data) {
     if (Object.entries(data).length < 1) return
     const profileRef = await db.collection('profiles').doc(state.user.data.uid)
     if (data.city) {
-      profileRef.update({ addresses: FieldValue.arrayUnion(data) })
+      await profileRef.update({ addresses: FieldValue.arrayUnion(data) })
     } else if (data.sex || data.speakingLanguage) {
-      profileRef.update({ ...data })
+      await profileRef.update({ ...data })
     }
+    const profile = await profileRef.get()
+    const profileData = await profile.data()
+    commit('SET_PROFILE', profileData)
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_USER_INSTANCE({ commit }, userData) {
@@ -80,8 +83,5 @@ export const mutations = {
   },
   SET_PROFILE(state, data) {
     state.profile = data
-  },
-  ADD_ADDRESS(state, data) {
-    state.profile.addresses.push(data)
   }
 }

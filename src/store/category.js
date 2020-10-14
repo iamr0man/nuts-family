@@ -1,14 +1,11 @@
-import { isFunction, find, clone } from 'lodash'
-import { db } from '@/plugins/firebase'
+import { find, clone } from 'lodash'
+import { db, FieldValue } from '@/plugins/firebase'
 
 export const state = () => ({
   categoryName: 'nuts',
   items: {},
-  item: null,
-  comments: null
+  item: null
 })
-
-let unsubscribeComments = null
 
 export const getters = {
   getItems: (state) => (searchedItems) => {
@@ -23,7 +20,6 @@ export const getters = {
       return state.items
     }
   },
-  getComments: (state) => state.comments,
   getItem: (state) => state.item
 }
 
@@ -35,33 +31,29 @@ export const actions = {
       items.docs.map((deal) => ({ id: deal.id, ...deal.data() }))
     )
   },
-  async VIEW_DEAL({ commit, state }, dealId) {
-    const dealRef = db.collection(state.categoryName).doc(dealId)
+  async VIEW_ITEM({ commit, state }, itemId) {
+    const itemRef = db.collection(state.categoryName).doc(itemId)
 
     // LISTENING TO COMMENT COLLECTION CHANGE WONT WORK HERE
     // THIS IS CALLED BY SERVER SIDE RENDERING
 
-    const deal = await dealRef.get()
-    commit('SET_ITEM', deal.data())
+    const item = await itemRef.get()
+    commit('SET_ITEM', item.data())
   },
-  INITIATE_LISTENING_TO_COMMENTS({ commit }, dealId) {
-    const dealRef = db.collection('deals').doc(dealId)
-    // THIS WILL NOT WORK AS ITS BEING RENDERED IN SERVER SIDE
-    unsubscribeComments = dealRef
-      .collection('comments')
-      .orderBy('timestamp', 'desc')
-      .limit(10)
-      .onSnapshot((snapshot) => {
-        const comments = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }))
-        commit('SET_COMMENTS', comments)
-      })
-  },
-  LEAVE_DEAL({ commit }) {
-    if (isFunction(unsubscribeComments)) unsubscribeComments()
-    commit('SET_ITEM', null)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async POST_COMMENT({ state, commit }, commentData) {
+    try {
+      const itemRef = await db
+        .collection(state.categoryName)
+        .doc(commentData.itemId)
+      await itemRef.update({ reviews: FieldValue.arrayUnion(commentData) })
+      const item = await itemRef.get()
+      const itemData = await item.data()
+      debugger
+      commit('SET_ITEM', itemData)
+    } catch (e) {
+      console.log(e)
+    }
   },
   UPDATE_SCORE({ commit }, score) {
     commit('SET_SCORE', score)
@@ -87,12 +79,6 @@ export const mutations = {
   },
   SET_ITEM(state, data) {
     state.item = data
-  },
-  SET_COMMENTS(state, data) {
-    state.comments = data
-  },
-  ADD_COMMENTS(state, data) {
-    state.comments = [...state.comments, ...data]
   },
   SET_SCORE(state, score) {
     state.deal = { ...state.deal, score }

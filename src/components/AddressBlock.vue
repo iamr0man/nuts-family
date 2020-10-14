@@ -133,11 +133,11 @@ export default {
     },
     async createProfile() {
       const data = {}
+      data.city = this.city.Present
+      data.addressType = this.addressType
       if (this.addressType === 'Відділення') {
-        data.city = this.city.Present
         data.warehouse = this.warehouse.Description
       } else if (this.addressType === 'Адреса') {
-        data.city = this.city.Present
         data.address = this.address
         data.apartment = this.apartment
         data.house = this.house
@@ -145,6 +145,7 @@ export default {
       }
       await this.$store.dispatch('auth/UPDATE_PROFILE', data)
       this.isAdding = false
+      this.addresses = this.profile.addresses
     }
   }
 }

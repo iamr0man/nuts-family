@@ -52,7 +52,8 @@ export default {
     async login() {
       try {
         await auth().signInWithEmailAndPassword(this.email, this.password)
-        this.$router.push('/')
+        await this.$store.dispatch('auth/GET_PROFILE')
+        await this.$router.push('/')
       } catch (e) {
         this.error.active = true
         this.error.message = e.message

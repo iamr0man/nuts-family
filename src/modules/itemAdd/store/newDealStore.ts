@@ -124,17 +124,6 @@ export default class extends VuexModule implements IDealStore {
   }
 
   @Action
-  async POST_COMMENT(data: any) {
-    try {
-      await db
-        .collection('deals')
-        .doc(data.dealId)
-        .collection('comments')
-        .add(data)
-    } catch (e) {}
-  }
-
-  @Action
   async VIEW_DEAL(dealId: string) {
     const dealRef = db.collection('deals').doc(dealId)
 
