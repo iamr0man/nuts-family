@@ -134,12 +134,12 @@ export default class extends VuexModule implements IDealStore {
     this.SET_DEAL(deal.data() as IDeal)
   }
 
-  @Action
-  LEAVE_DEAL() {
-    if (isFunction(unsubscribeComments)) unsubscribeComments()
-
-    this.SET_DEAL(null)
-  }
+  // @Action
+  // LEAVE_DEAL() {
+  //   if (isFunction(unsubscribeComments)) unsubscribeComments()
+  //
+  //   this.SET_DEAL(null)
+  // }
 
   @Action
   UPDATE_SCORE(score: number) {

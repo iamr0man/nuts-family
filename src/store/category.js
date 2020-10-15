@@ -46,14 +46,18 @@ export const actions = {
       const itemRef = await db
         .collection(state.categoryName)
         .doc(commentData.itemId)
-      await itemRef.update({ reviews: FieldValue.arrayUnion(commentData) })
+      await itemRef.update({
+        reviews: FieldValue.arrayUnion(commentData)
+      })
       const item = await itemRef.get()
       const itemData = await item.data()
-      debugger
       commit('SET_ITEM', itemData)
     } catch (e) {
       console.log(e)
     }
+  },
+  LEAVE_ITEM({ commit }) {
+    commit('SET_ITEM', null)
   },
   UPDATE_SCORE({ commit }, score) {
     commit('SET_SCORE', score)

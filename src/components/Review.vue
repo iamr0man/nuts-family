@@ -1,25 +1,21 @@
 <template>
   <div class="review">
     <div class="review__header">
-      <p class="review__username">{{ review.username }}</p>
+      <p class="review__username">{{ review.userName }}</p>
       <p class="review__date">{{ parsedDate }}</p>
     </div>
     <v-rating class="review__rating" color="secondary" :value="review.rating" />
-    <p class="review__text">{{ review.text }}</p>
+    <p class="review__text">{{ review.comment }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    review: {
-      type: Object,
-      default: () => {}
-    }
-  },
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['review'],
   computed: {
     parsedDate() {
-      const d = new Date(this.review.date)
+      const d = new Date(this.review.timestamp)
       const mm = new Date(d).getMonth() + 1
       const dd = new Date(d).getDate()
 

@@ -129,7 +129,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { FieldValue } from '~/plugins/firebase'
 import priceMixin from '~/mixins/priceMixin'
 import votesMixin from '~/mixins/votesMixin'
 import WeightSelect from '~/components/WeightSelect'
@@ -167,23 +166,28 @@ export default {
     }
   },
   mounted() {
-    this.reviews = this.profile.reviews
+    this.initFields()
   },
   beforeDestroy() {
     this.$store.dispatch('category/LEAVE_ITEM')
   },
   methods: {
-    postComment() {
+    initFields() {
+      const copy = this.item.reviews.slice()
+      this.reviews = copy.sort((a, b) => b.timestamp - a.timestamp)
+      this.dialog = false
+    },
+    async postComment() {
       const userName = this.user.data.displayName
       const commentData = {
         itemId: this.itemId,
         userName,
         rating: this.rating,
         comment: this.comment,
-        timestamp: FieldValue.serverTimestamp()
+        timestamp: new Date().getTime()
       }
-      this.$store.dispatch('category/POST_COMMENT', commentData)
-      this.reviews = this.profile.reviews
+      await this.$store.dispatch('category/POST_COMMENT', commentData)
+      this.initFields()
     }
   },
   head() {
