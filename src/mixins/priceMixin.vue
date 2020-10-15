@@ -21,7 +21,8 @@ export default {
       return this.item.price[this.weight] * Math.abs(this.amount)
     },
     countAvgStars() {
-      return this.item.reviews.map((v) => v.rating) / this.item.reviews.length
+      const sum = this.item.reviews.reduce((acc, curr) => acc + curr.rating, 0)
+      return sum / this.item.reviews.length
     }
   },
   methods: {

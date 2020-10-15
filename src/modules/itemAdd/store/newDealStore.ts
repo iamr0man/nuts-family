@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { isNil, clone, find, isFunction } from 'lodash'
+import { isNil, clone, find } from 'lodash'
 import { IDealStore, IDeal, IComment } from './types'
 import { db, storage } from '~/plugins/firebase'
 
@@ -33,8 +33,6 @@ const randomString = (stringCount: number = 5) => {
     .toString(36)
     .substr(2, stringCount)
 }
-
-let unsubscribeComments: null | Function = null
 
 @Module({
   name: 'deal',
@@ -134,13 +132,6 @@ export default class extends VuexModule implements IDealStore {
     this.SET_DEAL(deal.data() as IDeal)
   }
 
-  // @Action
-  // LEAVE_DEAL() {
-  //   if (isFunction(unsubscribeComments)) unsubscribeComments()
-  //
-  //   this.SET_DEAL(null)
-  // }
-
   @Action
   UPDATE_SCORE(score: number) {
     this.SET_SCORE(score)
@@ -157,24 +148,6 @@ export default class extends VuexModule implements IDealStore {
       ]
       this.SET_DEALS(deals)
     }
-  }
-
-  @Action
-  INITIATE_LISTENING_TO_COMMENTS(dealId: string) {
-    const dealRef = db.collection('deals').doc(dealId)
-    // THIS WILL NOT WORK AS ITS BEING RENDERED IN SERVER SIDE
-    unsubscribeComments = dealRef
-      .collection('comments')
-      .orderBy('timestamp', 'desc')
-      .limit(10)
-      .onSnapshot((snapshot) => {
-        const comments: IComment[] = snapshot.docs.map((doc) => ({
-          // @ts-ignore
-          id: doc.id,
-          ...(doc.data() as IComment)
-        }))
-        this.SET_COMMENTS(comments)
-      })
   }
 
   @Mutation

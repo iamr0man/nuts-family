@@ -4,7 +4,12 @@
     <h3 class="item-card__name">
       {{ item.name }}
     </h3>
-    <v-rating :value="countAvgStars" readonly color="secondary" />
+    <v-rating
+      class="item-card__rating"
+      :value="countAvgStars"
+      readonly
+      color="secondary"
+    />
     <WeightSelect :weight="weight" @changeWeight="updateWeight" />
     <p class="item-card__price">{{ price }} грн.</p>
     <v-btn class="item-card__action primary">Купити</v-btn>
@@ -115,8 +120,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .item-card {
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,6 +133,13 @@ export default {
   text-decoration: none;
   &__image {
     width: 100%;
+  }
+  &__name {
+    text-align: center;
+    font-size: 14px;
+  }
+  &__rating.v-rating .v-icon {
+    padding: 0 !important;
   }
   &__price {
     font-weight: 900;

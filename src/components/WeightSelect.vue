@@ -31,16 +31,16 @@ export default {
 
 <style lang="scss">
 .weights {
+  width: 105%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   &__item {
-    margin: 0 10px 4px 0;
     border: 1px solid #3cb640;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 3px 5px;
     color: #3cb640;
+    font-size: 14px;
   }
 
   &__item--active {

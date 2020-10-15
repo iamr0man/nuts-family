@@ -12,7 +12,20 @@
         <v-icon class="mdi mdi-magnify" />
       </v-text-field>
     </div>
-    <ItemCard v-for="v in searchedItems" :key="v.name" class="my-4" :item="v" />
+    <div class="catalog__items">
+      <ItemCard
+        v-for="v in searchedItems"
+        :key="v.name"
+        class="my-4"
+        :item="v"
+      />
+      <ItemCard
+        v-for="v in searchedItems"
+        :key="v.name"
+        class="my-4"
+        :item="v"
+      />
+    </div>
   </div>
 </template>
 
@@ -47,3 +60,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.catalog__items {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+</style>
