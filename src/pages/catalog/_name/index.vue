@@ -19,12 +19,6 @@
         class="my-4"
         :item="v"
       />
-      <ItemCard
-        v-for="v in searchedItems"
-        :key="v.name"
-        class="my-4"
-        :item="v"
-      />
     </div>
   </div>
 </template>

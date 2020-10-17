@@ -42,7 +42,9 @@
             class="product-page__amount"
             solo
           />
-          <v-btn class="product-page__buy" color="primary">Купити</v-btn>
+          <v-btn class="product-page__buy" @click="addToCart" color="primary"
+            >Купити</v-btn
+          >
         </div>
       </div>
       <div class="product-page__additional">
@@ -129,6 +131,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { v4 as uuidv4 } from 'uuid'
 import priceMixin from '~/mixins/priceMixin'
 import votesMixin from '~/mixins/votesMixin'
 import WeightSelect from '~/components/WeightSelect'
@@ -188,6 +191,15 @@ export default {
       }
       await this.$store.dispatch('category/POST_COMMENT', commentData)
       this.initFields()
+    },
+    async addToCart() {
+      const cartData = {
+        id: uuidv4(),
+        productId: this.itemId,
+        weight: this.weight,
+        amount: this.amount
+      }
+      await this.$store.dispatch('cart/ADD_CART_PRODUCT', cartData)
     }
   },
   head() {

@@ -1,13 +1,13 @@
 <template>
   <div class="cart__item">
-    <img :src="v.image" alt="" class="item__image" />
-    <h2 class="item__name">{{ v.name }}</h2>
-    <p class="item__weight">Вага {{ v.selectedWeight }}</p>
+    <img :src="item.product.image" alt="" class="item__image" />
+    <h2 class="item__name">{{ item.product.name }}</h2>
+    <p class="item__weight">Вага {{ item.weight }}</p>
     <div class="item__amount">
       <p class="item__label">Кількість</p>
       <v-text-field v-model="amount" class="item__field" />
     </div>
-    <div class="item__price">{{ v.selectedPrice }}</div>
+    <div class="item__price">{{ price }}</div>
     <div class="item__remove" />
   </div>
 </template>
@@ -15,6 +15,8 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['item'],
   data: () => ({
     amount: 1
   }),
@@ -23,9 +25,6 @@ export default {
     price() {
       return this.amount
     }
-  },
-  mounted() {
-    this.amount = this.cart.selectedAmount
   }
 }
 </script>

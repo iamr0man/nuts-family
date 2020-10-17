@@ -123,7 +123,7 @@ export default class extends VuexModule implements IDealStore {
 
   @Action
   async VIEW_DEAL(dealId: string) {
-    const dealRef = db.collection('deals').doc(dealId)
+    const dealRef = await db.collection('deals').doc(dealId)
 
     // LISTENING TO COMMENT COLLECTION CHANGE WONT WORK HERE
     // THIS IS CALLED BY SERVER SIDE RENDERING

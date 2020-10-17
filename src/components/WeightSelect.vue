@@ -38,6 +38,7 @@ export default {
   &__item {
     border: 1px solid #3cb640;
     border-radius: 10px;
+    margin: 0 5px;
     padding: 3px 5px;
     color: #3cb640;
     font-size: 14px;

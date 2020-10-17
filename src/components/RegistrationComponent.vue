@@ -100,6 +100,7 @@ export default {
           userInstanceInfo
         )
         await this.$store.dispatch('auth/CREATE_PROFILE', userInstanceInfo.uid)
+        await this.$store.dispatch('cart/CREATE_CART', userInstanceInfo.uid)
         await this.$router.push('/')
       } catch (error) {
         this.snackbar = true

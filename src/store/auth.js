@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-// import { FieldValue } from 'firebase-admin'
 import { db, FieldValue } from '~/plugins/firebase'
 
 export const state = () => ({
@@ -69,7 +68,7 @@ export const actions = {
     }
     await db
       .collection('profiles')
-      .doc(state.user.data.uid)
+      .doc(userId)
       .set(profileData)
   }
 }

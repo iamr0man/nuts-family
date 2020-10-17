@@ -32,13 +32,13 @@ export const actions = {
     )
   },
   async VIEW_ITEM({ commit, state }, itemId) {
-    const itemRef = db.collection(state.categoryName).doc(itemId)
+    const itemRef = await db.collection(state.categoryName).doc(itemId)
 
     // LISTENING TO COMMENT COLLECTION CHANGE WONT WORK HERE
     // THIS IS CALLED BY SERVER SIDE RENDERING
 
     const item = await itemRef.get()
-    commit('SET_ITEM', item.data())
+    commit('SET_ITEM', { id: item.id, ...item.data() })
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async POST_COMMENT({ state, commit }, commentData) {
