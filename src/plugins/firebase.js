@@ -37,8 +37,8 @@ export default (context) => {
   try {
     auth.onAuthStateChanged((user) => {
       store.dispatch('auth/FETCH_USER', user)
-      store.dispatch('auth/GET_PROFILE')
-      store.dispatch('cart/GET_CART', user.uid)
+      store.dispatch('auth/GET_PROFILE', user)
+      store.dispatch('cart/GET_CART', user)
     })
   } catch (error) {}
 }

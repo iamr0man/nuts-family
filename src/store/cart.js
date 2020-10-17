@@ -21,28 +21,29 @@ export const actions = {
       .doc(userId)
       .set(cartData)
   },
-  async GET_CART({ commit }, userId) {
-    const cartRef = await db.collection('cart').doc(userId)
-
-    const cart = await cartRef.get()
-    commit('SET_CART', cart.data())
+  async GET_CART({ commit }, user) {
+    if (user) {
+      const cartRef = await db.collection('cart').doc(user.uid)
+      const cart = await cartRef.get()
+      commit('SET_CART', cart.data())
+    } else {
+      commit('SET_CART', {})
+    }
   },
   async ADD_CART_PRODUCT({ state, commit }, data) {
-    const cartRef = await db
-      .collection('cart')
-      .doc(state.cart.userId)
-      .update({ products: FieldValue.arrayUnion(data) })
+    const cartRef = await db.collection('cart').doc(state.cart.userId)
+    await cartRef.update({ products: FieldValue.arrayUnion(data) })
+
     const cart = await cartRef.get()
     const cartData = await cart.data()
     commit('SET_CART', cartData)
   },
   async REMOVE_CART_PRODUCT({ state, commit }, productId) {
-    const cartRef = await db
-      .collection('cart')
-      .doc(state.cart.userId)
-      .update({
-        products: state.cart.products.filter((v) => v.id !== productId)
-      })
+    const cartRef = await db.collection('cart').doc(state.cart.userId)
+    await cartRef.update({
+      products: state.cart.products.filter((v) => v.id !== productId)
+    })
+
     const cart = await cartRef.get()
     const cartData = await cart.data()
     commit('SET_CART', cartData)

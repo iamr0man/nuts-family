@@ -42,7 +42,7 @@
             class="product-page__amount"
             solo
           />
-          <v-btn class="product-page__buy" @click="addToCart" color="primary"
+          <v-btn class="product-page__buy" color="primary" @click="addToCart"
             >Купити</v-btn
           >
         </div>
@@ -193,13 +193,14 @@ export default {
       this.initFields()
     },
     async addToCart() {
-      const cartData = {
+      const data = {
         id: uuidv4(),
         productId: this.itemId,
+        categoryName: this.$route.params.name,
         weight: this.weight,
         amount: this.amount
       }
-      await this.$store.dispatch('cart/ADD_CART_PRODUCT', cartData)
+      await this.$store.dispatch('cart/ADD_CART_PRODUCT', data)
     }
   },
   head() {

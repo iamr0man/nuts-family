@@ -24,9 +24,6 @@ export default {
     AddressBlock,
     ContactBlock
   },
-  async fetch({ store }) {
-    await store.dispatch('auth/GET_PROFILE')
-  },
   data: () => ({
     auth: auth().currentUser
   }),

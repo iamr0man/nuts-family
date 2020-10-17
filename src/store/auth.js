@@ -27,14 +27,18 @@ export const actions = {
       commit('SET_USER_DATA', null)
     }
   },
-  async GET_PROFILE({ state, commit }) {
-    const profile = await db
-      .collection('profiles')
-      .doc(state.user.data.uid)
-      .get()
-    const profileData = await profile.data()
-    if (profile.exists) {
-      commit('SET_PROFILE', profileData)
+  async GET_PROFILE({ commit }, user) {
+    if (user) {
+      const profile = await db
+        .collection('profiles')
+        .doc(user.uid)
+        .get()
+      const profileData = await profile.data()
+      if (profile.exists) {
+        commit('SET_PROFILE', profileData)
+      }
+    } else {
+      commit('SET_PROFILE', {})
     }
   },
   async UPDATE_PROFILE({ state, commit }, data) {

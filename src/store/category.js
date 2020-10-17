@@ -52,9 +52,7 @@ export const actions = {
       const item = await itemRef.get()
       const itemData = await item.data()
       commit('SET_ITEM', itemData)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   },
   LEAVE_ITEM({ commit }) {
     commit('SET_ITEM', null)
