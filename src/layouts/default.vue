@@ -90,11 +90,11 @@ export default {
         {
           icon: 'mdi mdi-clipboard-list-outline',
           title: 'Замовлення',
-          to: '/order',
+          to: '/checkout',
           showWhenLoggedIn: true,
           showWhenAnonymous: false,
           click: () => {
-            this.$router.push('/order')
+            this.$router.push('/checkout')
           }
         },
         {

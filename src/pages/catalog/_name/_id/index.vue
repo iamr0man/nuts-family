@@ -131,7 +131,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { v4 as uuidv4 } from 'uuid'
+import { v1 as uuidv1 } from 'uuid'
 import priceMixin from '~/mixins/priceMixin'
 import votesMixin from '~/mixins/votesMixin'
 import WeightSelect from '~/components/WeightSelect'
@@ -194,7 +194,7 @@ export default {
     },
     async addToCart() {
       const data = {
-        id: uuidv4(),
+        id: uuidv1(),
         productId: this.itemId,
         categoryName: this.$route.params.name,
         weight: this.weight,

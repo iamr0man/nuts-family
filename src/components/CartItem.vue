@@ -24,7 +24,7 @@ export default {
     amount: 1
   }),
   computed: {
-    ...mapGetters('auth', { profile: 'getProfile' }),
+    ...mapGetters('cart', { cart: 'getCart' }),
     price() {
       return this.amount * this.item.product.price[this.item.weight]
     }
@@ -32,6 +32,7 @@ export default {
   methods: {
     async removeItem() {
       await this.$store.dispatch('cart/REMOVE_CART_PRODUCT', this.item.id)
+      // this.$emit('updateProducts', this.cart)
     }
   }
 }

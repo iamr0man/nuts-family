@@ -1,6 +1,24 @@
 import { v4 as uuidv4 } from 'uuid'
 import { db, FieldValue } from '@/plugins/firebase'
 
+async function handleResponse(data) {
+  let products = []
+  try {
+    products = (
+      await Promise.all(
+        data.products.map(async (v) => {
+          const categoryRef = db.collection(v.categoryName)
+          return { doc: await categoryRef.doc(v.productId).get(), v }
+        })
+      )
+    )
+      .filter((elem) => elem.doc.exists)
+      .map((elem) => ({ id: elem.doc.id, product: elem.doc.data(), ...elem.v }))
+    data.products = products
+    return data
+  } catch (error) {}
+}
+
 export const state = () => ({
   cart: {}
 })
@@ -25,7 +43,8 @@ export const actions = {
     if (user) {
       const cartRef = await db.collection('cart').doc(user.uid)
       const cart = await cartRef.get()
-      commit('SET_CART', cart.data())
+      const cartData = await cart.data()
+      commit('SET_CART', await handleResponse(cartData))
     } else {
       commit('SET_CART', {})
     }
@@ -36,7 +55,7 @@ export const actions = {
 
     const cart = await cartRef.get()
     const cartData = await cart.data()
-    commit('SET_CART', cartData)
+    commit('SET_CART', await handleResponse(cartData))
   },
   async REMOVE_CART_PRODUCT({ state, commit }, productId) {
     const cartRef = await db.collection('cart').doc(state.cart.userId)
@@ -46,7 +65,7 @@ export const actions = {
 
     const cart = await cartRef.get()
     const cartData = await cart.data()
-    commit('SET_CART', cartData)
+    commit('SET_CART', await handleResponse(cartData))
   }
 }
 
