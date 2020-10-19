@@ -78,6 +78,16 @@ export const actions = {
       .collection('profiles')
       .doc(userId)
       .set(profileData)
+  },
+  async REMOVE_PROFILE_ADDRESS({ state, commit }, addressId) {
+    const profileRef = await db.collection('profiles').doc(state.user.data.uid)
+    await profileRef.update({
+      addresses: state.profile.addresses.filter((v) => v.id !== addressId)
+    })
+
+    const profile = await profileRef.get()
+    const profileData = await profile.data()
+    commit('SET_PROFILE', profileData)
   }
 }
 

@@ -42,9 +42,14 @@
             class="product-page__amount"
             solo
           />
-          <v-btn class="product-page__buy" color="primary" @click="addToCart"
+          <v-btn
+            v-if="!isExistInCart"
+            class="product-page__buy"
+            color="primary"
+            @click="addToCart"
             >Купити</v-btn
           >
+          <nuxt-link v-else to="/cart">Товар вже в кошику</nuxt-link>
         </div>
       </div>
       <div class="product-page__additional">

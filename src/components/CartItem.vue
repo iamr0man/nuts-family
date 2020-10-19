@@ -29,6 +29,9 @@ export default {
       return this.amount * this.item.product.price[this.item.weight]
     }
   },
+  mounted() {
+    this.amount = this.item.amount
+  },
   methods: {
     async removeItem() {
       await this.$store.dispatch('cart/REMOVE_CART_PRODUCT', this.item.id)

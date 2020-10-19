@@ -1,10 +1,10 @@
 <template>
   <div class="checkout">
     <div class="checkout__left">
-      <v-text-field :value="user.data.displayName.split(' ')[0]" />
-      <v-text-field :value="user.data.displayName.split(' ')[1]" />
-      <v-text-field :value="user.data.email" />
-      <v-text-field :value="user.data.phoneNumber" label="Мобільний телефон" />
+      <v-text-field v-model="surname" />
+      <v-text-field v-model="name" />
+      <v-text-field v-model="user.data.email" />
+      <v-text-field v-model="user.data.phoneNumber" label="Мобільний телефон" />
       <v-checkbox
         v-model="consult"
         label="Я потребую консультації щодо замовлення. Зателефонуйте мені."
@@ -87,6 +87,10 @@ export default {
     Cart
   },
   data: () => ({
+    surname: '',
+    name: '',
+    email: '',
+    phoneNumber: '',
     consult: false,
     payMethod: '',
     payMethods: [
@@ -133,6 +137,12 @@ export default {
       warehouse: 'getWarehouses'
     }),
     ...mapGetters('cart', { cart: 'getCart' })
+  },
+  mounted() {
+    this.surname = this.user.data.displayName.split(' ')[0]
+    this.name = this.user.data.displayName.split(' ')[1]
+    this.email = this.user.data.email
+    this.phoneNumber = this.user.data.phoneNumber
   }
 }
 </script>

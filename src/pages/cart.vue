@@ -3,7 +3,11 @@
     <h3 class="cart__header">{{ headerName }}</h3>
     <h4 class="cart__total">{{ totalPrice }} грн.</h4>
     <CartItem v-for="v in cart.products" :key="v.id" :item="v" />
-    <v-btn color="primary" class="cart__action" @click="checkout"
+    <v-btn
+      :disabled="!isExist"
+      color="primary"
+      class="cart__action"
+      @click="checkout"
       >Оформити замовлення</v-btn
     >
   </div>
@@ -28,6 +32,9 @@ export default {
   computed: {
     ...mapGetters('auth', { profile: 'getProfile' }),
     ...mapGetters('cart', { cart: 'getCart' }),
+    isExist() {
+      return Boolean(this.cart.products.length)
+    },
     totalPrice() {
       return this.cart.products.reduce(
         (acc, curr) => acc + curr.amount * curr.product.price[curr.weight],

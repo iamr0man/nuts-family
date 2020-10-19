@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex'
 import WeightSelect from '~/components/WeightSelect'
 
 export default {
@@ -14,6 +15,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('cart', { cart: 'getCart' }),
     weights() {
       return Object.entries(this.item.price)
     },
@@ -23,6 +25,9 @@ export default {
     countAvgStars() {
       const sum = this.item.reviews.reduce((acc, curr) => acc + curr.rating, 0)
       return sum / this.item.reviews.length
+    },
+    isExistInCart() {
+      return this.cart.products.find((v) => v.productId === this.item.id)
     }
   },
   methods: {

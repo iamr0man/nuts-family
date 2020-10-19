@@ -16,11 +16,9 @@
 export default {
   // eslint-disable-next-line vue/require-prop-types
   props: ['weight'],
-  data() {
-    return {
-      weights: [100, 200, 300, 500, 1000]
-    }
-  },
+  data: () => ({
+    weights: [100, 200, 300, 500, 1000]
+  }),
   methods: {
     setActive(v) {
       this.$emit('changeWeight', v)

@@ -58,7 +58,6 @@ export default {
 <style lang="scss">
 .catalog__items {
   display: flex;
-  align-items: baseline;
   flex-wrap: wrap;
 }
 </style>

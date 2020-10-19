@@ -33,6 +33,9 @@
               label="Коментар до адресу"
             />
           </div>
+          <v-btn @click="removeAddress(v.id)"
+            ><v-icon class="mdi mdi-delete-forever"></v-icon
+          ></v-btn>
         </div>
         <div v-if="isAdding" class="block__field">
           <v-autocomplete
@@ -131,6 +134,10 @@ export default {
         this.warehouses = data
       }
     },
+    async removeAddress(addressId) {
+      await this.$store.dispatch('auth/REMOVE_PROFILE_ADDRESS', addressId)
+      this.addresses = this.profile.addresses
+    },
     async createProfile() {
       const data = {}
       data.city = this.city.Present
@@ -150,3 +157,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.block {
+  &__addresses {
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>
