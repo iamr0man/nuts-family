@@ -1,10 +1,10 @@
 <template>
   <div class="checkout">
     <div class="checkout__left">
-      <v-text-field v-model="surname" />
-      <v-text-field v-model="name" />
-      <v-text-field v-model="user.data.email" />
-      <v-text-field v-model="user.data.phoneNumber" label="Мобільний телефон" />
+      <v-text-field v-model="surname" label="Прізвище" />
+      <v-text-field v-model="name" label="Ім'я" />
+      <v-text-field v-model="email" label="Ел. пошта" />
+      <v-text-field v-model="phoneNumber" label="Мобільний телефон" />
       <v-checkbox
         v-model="consult"
         label="Я потребую консультації щодо замовлення. Зателефонуйте мені."
@@ -35,40 +35,24 @@
         <div class="block__hint">
           <div v-if="deliveryMethod === 'Нова Пошта'" class="block__addresses">
             <v-text-field readonly :value="warehouse.city" label="Місто" />
-            <v-text-field
-              readonly
-              :value="warehouse.addressType"
-              label="Звідки"
-            />
-            <v-text-field
-              readonly
-              :value="warehouse.warehouse"
-              label="Відділення"
-            />
+            <v-text-field v-model="warehouse.addressType" label="Звідки" />
+            <v-text-field v-model="warehouse.warehouse" label="Відділення" />
           </div>
-          <p v-else-if="deliveryMethod === 'Самовивіз'">
-            ул. Михаила Драгоманова, 25, Киев, 02000
-          </p>
           <div
             v-else-if="deliveryMethod === 'Кур`єрська доставка по Києву'"
             class="block__nested-fields"
           >
-            <v-text-field readonly :value="address.address" label="Вулиця" />
+            <v-text-field v-model="address.address" readonly label="Вулиця" />
             <v-row>
               <v-col cols="6">
-                <v-text-field readonly :value="address.house" label="Будинок" />
+                <v-text-field v-model="address.house" label="Будинок" />
               </v-col>
               <v-col cols="6">
-                <v-text-field
-                  readonly
-                  :value="address.apartment"
-                  label="Квартира"
-                />
+                <v-text-field v-model="address.apartment" label="Квартира" />
               </v-col>
             </v-row>
             <v-text-field
-              readonly
-              :value="address.comment"
+              v-model="address.comment"
               label="Коментар до адресу"
             />
           </div>
@@ -91,6 +75,19 @@ export default {
     name: '',
     email: '',
     phoneNumber: '',
+    address: {
+      city: '',
+      addressType: '',
+      address: '',
+      house: '',
+      apartment: '',
+      comment: ''
+    },
+    warehouse: {
+      city: '',
+      addressType: '',
+      warehouse: ''
+    },
     consult: false,
     payMethod: '',
     payMethods: [
@@ -119,10 +116,6 @@ export default {
         value: 'Нова Пошта'
       },
       {
-        label: 'Самовивіз',
-        value: 'Самовивіз'
-      },
-      {
         label: 'Кур`єрська доставка по Києву',
         value: 'Кур`єрська доставка по Києву'
       }
@@ -133,16 +126,24 @@ export default {
     ...mapGetters('auth', {
       user: 'getUser',
       profile: 'getProfile',
-      address: 'getAddresses',
-      warehouse: 'getWarehouses'
+      addressProfile: 'getAddresses',
+      warehouseProfile: 'getWarehouses'
     }),
     ...mapGetters('cart', { cart: 'getCart' })
   },
   mounted() {
-    this.surname = this.user.data.displayName.split(' ')[0]
-    this.name = this.user.data.displayName.split(' ')[1]
-    this.email = this.user.data.email
-    this.phoneNumber = this.user.data.phoneNumber
+    if (this.user.loggedIn) {
+      this.surname = this.user.data.displayName.split(' ')[0]
+      this.name = this.user.data.displayName.split(' ')[1]
+      this.email = this.user.data.email
+      this.phoneNumber = this.user.data.phoneNumber
+    }
+    if (this.addressProfile) {
+      this.address = this.addressProfile
+    }
+    if (this.warehouseProfile) {
+      this.warehouse = this.warehouseProfile
+    }
   }
 }
 </script>

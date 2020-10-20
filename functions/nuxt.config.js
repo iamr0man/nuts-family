@@ -39,10 +39,12 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '@/plugins/auth.js',
     '@/plugins/composition-api.js',
     '@/plugins/firebase.js',
     '@/plugins/filters.js',
-    '@/plugins/vuetify.js'
+    '@/plugins/vuetify.js',
+    '@/plugins/repository.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -71,7 +73,9 @@ module.exports = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://api.novaposhta.ua/v2.0/json/'
+  },
   http: {
     proxyHeaders: false
   },
@@ -89,7 +93,7 @@ module.exports = {
           secondary: '#ffc72c'
         },
         dark: {
-          primary: colors.blue.darken2,
+          primary: colors.green.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -103,7 +107,6 @@ module.exports = {
   /*
    ** Build configuration
    */
-
   build: {
     /*
      ** You can extend webpack config here

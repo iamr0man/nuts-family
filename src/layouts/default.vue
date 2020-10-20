@@ -82,7 +82,7 @@ export default {
           title: 'Мій кошик',
           to: '/cart',
           showWhenLoggedIn: true,
-          showWhenAnonymous: false,
+          showWhenAnonymous: true,
           click: () => {
             this.$router.push('/cart')
           }
@@ -92,7 +92,7 @@ export default {
           title: 'Замовлення',
           to: '/checkout',
           showWhenLoggedIn: true,
-          showWhenAnonymous: false,
+          showWhenAnonymous: true,
           click: () => {
             this.$router.push('/checkout')
           }

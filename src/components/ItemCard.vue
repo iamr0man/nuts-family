@@ -84,4 +84,11 @@ export default {
     margin: 10px 0;
   }
 }
+
+@media screen and (min-width: 868px) {
+  .item-card {
+    width: 24%;
+    margin: 0 10px;
+  }
+}
 </style>

@@ -2,7 +2,9 @@
   <div class="cart">
     <h3 class="cart__header">{{ headerName }}</h3>
     <h4 class="cart__total">{{ totalPrice }} грн.</h4>
-    <CartItem v-for="v in cart.products" :key="v.id" :item="v" />
+    <div class="cart__items">
+      <CartItem v-for="v in cart.products" :key="v.id" :item="v" />
+    </div>
     <v-btn
       :disabled="!isExist"
       color="primary"
@@ -59,6 +61,10 @@ export default {
     font-weight: 400;
     font-size: 16px;
   }
+  &__items {
+    display: flex;
+    flex-direction: column;
+  }
   &__total {
     z-index: 1;
     font-weight: bold;
@@ -66,6 +72,14 @@ export default {
   }
   &__action {
     border-radius: 30px;
+  }
+}
+
+@media screen and (min-width: 868px) {
+  .cart {
+    &__items {
+      flex-direction: row;
+    }
   }
 }
 </style>

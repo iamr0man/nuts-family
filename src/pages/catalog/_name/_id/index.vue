@@ -75,6 +75,7 @@
             <v-expansion-panel-content>
               <v-row class="mt-3" justify="center">
                 <v-dialog
+                  v-if="user"
                   v-model="dialog"
                   fullscreen
                   hide-overlay
@@ -110,13 +111,13 @@
                       <p class="product-page__label label">
                         Ваше ім'я та прізвище:
                       </p>
-                      <v-text-field readonly :value="user.data.displayName" />
+                      <v-text-field v-model="displayName" />
                     </div>
                     <div class="product-page__input">
                       <p class="product-page__label label">
                         Електронна пошта:
                       </p>
-                      <v-text-field readonly :value="user.data.email" />
+                      <v-text-field v-model="email" />
                     </div>
                     <v-btn>Скасувати</v-btn>
                     <v-btn color="primary" @click="postComment"
@@ -161,6 +162,8 @@ export default {
     dialog: false,
     rating: 0,
     comment: '',
+    displayName: '',
+    email: '',
     reviews: []
   }),
   computed: {
@@ -175,6 +178,10 @@ export default {
   },
   mounted() {
     this.initFields()
+    if (this.user.loggedIn) {
+      this.displayName = this.user.data.displayName
+      this.email = this.user.data.email
+    }
   },
   beforeDestroy() {
     this.$store.dispatch('category/LEAVE_ITEM')
@@ -238,6 +245,7 @@ a.comment-link {
   &__wrapper {
     #{$self}__image {
       width: 100%;
+      width: 460px;
     }
     #{$self}__info {
       #{$self}__name {
@@ -283,6 +291,23 @@ a.comment-link {
           margin-left: 10px;
         }
       }
+    }
+  }
+  @media screen and (min-width: 500px) {
+    .product-page {
+      &__wrapper {
+        margin: 0 auto;
+        width: 450px;
+        #{$self}__image {
+          width: 460px;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .product-page {
+      display: flex;
+      width: 700px;
     }
   }
 }

@@ -43,12 +43,12 @@ export default {
 
 <style lang="scss">
 .item {
-  width: 70%;
+  max-width: 250px;
   min-height: 390px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px 0;
+  margin: 10px 15px;
   border-radius: 50px;
   background: #ffffff;
   box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;

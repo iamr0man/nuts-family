@@ -46,26 +46,59 @@ export const actions = {
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
     } else {
-      commit('SET_CART', {})
+      let localCart = JSON.parse(localStorage.getItem('localCart'))
+      if (!localCart) {
+        localStorage.setItem(
+          'localCart',
+          JSON.stringify({
+            products: []
+          })
+        )
+      } else {
+        localStorage.setItem(
+          'localCart',
+          JSON.stringify(await handleResponse(localCart))
+        )
+      }
+      localCart = JSON.parse(localStorage.getItem('localCart'))
+      commit('SET_CART', localCart)
     }
   },
   async ADD_CART_PRODUCT({ state, commit }, data) {
-    const cartRef = await db.collection('cart').doc(state.cart.userId)
-    await cartRef.update({ products: FieldValue.arrayUnion(data) })
+    if (state.cart.userId) {
+      const cartRef = await db.collection('cart').doc(state.cart.userId)
+      await cartRef.update({ products: FieldValue.arrayUnion(data) })
 
-    const cart = await cartRef.get()
-    const cartData = await cart.data()
-    commit('SET_CART', await handleResponse(cartData))
+      const cart = await cartRef.get()
+      const cartData = await cart.data()
+      commit('SET_CART', await handleResponse(cartData))
+    } else {
+      let localCart = JSON.parse(localStorage.getItem('localCart'))
+      localCart.products.push(data)
+
+      localStorage.setItem('localCart', JSON.stringify(localCart))
+      localCart = JSON.parse(localStorage.getItem('localCart'))
+      commit('SET_CART', await handleResponse(localCart))
+    }
   },
   async REMOVE_CART_PRODUCT({ state, commit }, productId) {
-    const cartRef = await db.collection('cart').doc(state.cart.userId)
-    await cartRef.update({
-      products: state.cart.products.filter((v) => v.id !== productId)
-    })
+    if (state.cart.userId) {
+      const cartRef = await db.collection('cart').doc(state.cart.userId)
+      await cartRef.update({
+        products: state.cart.products.filter((v) => v.id !== productId)
+      })
 
-    const cart = await cartRef.get()
-    const cartData = await cart.data()
-    commit('SET_CART', await handleResponse(cartData))
+      const cart = await cartRef.get()
+      const cartData = await cart.data()
+      commit('SET_CART', await handleResponse(cartData))
+    } else {
+      let localCart = JSON.parse(localStorage.getItem('localCart'))
+      localCart.products = localCart.products.filter((v) => v.id !== productId)
+
+      localStorage.setItem('localCart', JSON.stringify(localCart))
+      localCart = JSON.parse(localStorage.getItem('localCart'))
+      commit('SET_CART', await handleResponse(localCart))
+    }
   }
 }
 

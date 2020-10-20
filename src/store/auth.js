@@ -12,10 +12,20 @@ export const state = () => ({
 export const getters = {
   getUser: (state) => state.user,
   getProfile: (state) => state.profile,
-  getWarehouses: (state) =>
-    state.profile.addresses.filter((v) => v.addressType === 'Відділення')[0],
-  getAddresses: (state) =>
-    state.profile.addresses.filter((v) => v.addressType === 'Адреса')[0]
+  getWarehouses: (state) => {
+    if (state.profile.addresses) {
+      return state.profile.addresses.filter(
+        (v) => v.addressType === 'Відділення'
+      )[0]
+    }
+  },
+  getAddresses: (state) => {
+    if (state.profile.addresses) {
+      return state.profile.addresses.filter(
+        (v) => v.addressType === 'Адреса'
+      )[0]
+    }
+  }
 }
 
 export const actions = {
