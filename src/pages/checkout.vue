@@ -1,10 +1,14 @@
 <template>
   <div class="checkout">
     <div class="checkout__left">
-      <v-text-field v-model="surname" label="Прізвище" />
-      <v-text-field v-model="name" label="Ім'я" />
+      <v-text-field v-model="surname" :rules="requiredRule" label="Прізвище" />
+      <v-text-field v-model="name" :rules="requiredRule" label="Ім'я" />
       <v-text-field v-model="email" label="Ел. пошта" />
-      <v-text-field v-model="phoneNumber" label="Мобільний телефон" />
+      <v-text-field
+        v-model="phoneNumber"
+        :rules="requiredRule"
+        label="Мобільний телефон"
+      />
       <v-checkbox
         v-model="consult"
         label="Я потребую консультації щодо замовлення. Зателефонуйте мені."
@@ -34,15 +38,14 @@
         </v-radio-group>
         <div class="block__hint">
           <div v-if="deliveryMethod === 'Нова Пошта'" class="block__addresses">
-            <v-text-field readonly :value="warehouse.city" label="Місто" />
-            <v-text-field v-model="warehouse.addressType" label="Звідки" />
+            <v-text-field v-model="warehouse.city" label="Місто" />
             <v-text-field v-model="warehouse.warehouse" label="Відділення" />
           </div>
           <div
             v-else-if="deliveryMethod === 'Кур`єрська доставка по Києву'"
             class="block__nested-fields"
           >
-            <v-text-field v-model="address.address" readonly label="Вулиця" />
+            <v-text-field v-model="address.address" label="Вулиця" />
             <v-row>
               <v-col cols="6">
                 <v-text-field v-model="address.house" label="Будинок" />
@@ -60,24 +63,35 @@
       </div>
     </div>
     <Cart class="checkout__right" header-name="Товари в корзині" />
+    <v-btn
+      :disabled="!isExist"
+      color="primary"
+      class="checkout__action"
+      @click="checkout"
+      >Оформити замовлення</v-btn
+    >
   </div>
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import { mapGetters } from 'vuex'
 import Cart from '~/pages/cart'
+import priceMixin from '~/mixins/priceMixin'
 export default {
   components: {
     Cart
   },
+  mixins: [priceMixin],
   data: () => ({
+    requiredRule: [(v) => !!v || 'Це поле повинно бути заповене'],
     surname: '',
     name: '',
     email: '',
     phoneNumber: '',
     address: {
       city: '',
-      addressType: '',
+      addressType: 'Адреса',
       address: '',
       house: '',
       apartment: '',
@@ -85,7 +99,7 @@ export default {
     },
     warehouse: {
       city: '',
-      addressType: '',
+      addressType: 'Відділення',
       warehouse: ''
     },
     consult: false,
@@ -131,6 +145,22 @@ export default {
     }),
     ...mapGetters('cart', { cart: 'getCart' })
   },
+  methods: {
+    async checkout() {
+      const data = {
+        id: uuidv4(),
+        surname: this.surname,
+        name: this.name,
+        email: this.email,
+        phoneNumber: this.phoneNumber,
+        address:
+          this.deliveryMethod === 'Нова Пошта' ? this.warehouse : this.address,
+        delivery: this.deliveryMethod,
+        pay: this.payMethod
+      }
+      await this.$store.dispatch('auth/CREATE_ORDER', data)
+    }
+  },
   mounted() {
     if (this.user.loggedIn) {
       this.surname = this.user.data.displayName.split(' ')[0]
@@ -156,6 +186,9 @@ export default {
   &__left {
     display: flex;
     flex-direction: column;
+  }
+  &__action {
+    border-radius: 30px;
   }
 }
 </style>

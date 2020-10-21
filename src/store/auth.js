@@ -98,6 +98,12 @@ export const actions = {
     const profile = await profileRef.get()
     const profileData = await profile.data()
     commit('SET_PROFILE', profileData)
+  },
+  async CREATE_ORDER(order) {
+    await db
+      .collection('orders')
+      .doc(order.id)
+      .set(order)
   }
 }
 

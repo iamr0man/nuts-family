@@ -81,6 +81,30 @@ export const actions = {
       commit('SET_CART', await handleResponse(localCart))
     }
   },
+  async UPDATE_CART_PRODUCT({ state, commit }, item) {
+    if (state.cart.userId) {
+      const cartRef = await db.collection('cart').doc(state.cart.userId)
+      const newDate = {
+        index: state.cart.products.findIndex((v) => v.id === item.id),
+        amount: item.amount
+      }
+      commit('SET_PRODUCT_AMOUNT', newDate)
+      await cartRef.update({
+        products: state.cart.products
+      })
+
+      const cart = await cartRef.get()
+      const cartData = await cart.data()
+      commit('SET_CART', await handleResponse(cartData))
+    } else {
+      let localCart = JSON.parse(localStorage.getItem('localCart'))
+      const index = localCart.products.findIndex((v) => v.id === item.id)
+      localCart.products[index].amount = +item.amount
+      localStorage.setItem('localCart', JSON.stringify(localCart))
+      localCart = JSON.parse(localStorage.getItem('localCart'))
+      commit('SET_CART', await handleResponse(localCart))
+    }
+  },
   async REMOVE_CART_PRODUCT({ state, commit }, productId) {
     if (state.cart.userId) {
       const cartRef = await db.collection('cart').doc(state.cart.userId)
@@ -105,5 +129,8 @@ export const actions = {
 export const mutations = {
   SET_CART(state, data) {
     state.cart = data
+  },
+  SET_PRODUCT_AMOUNT(state, data) {
+    state.cart.products[data.index].amount = +data.amount
   }
 }

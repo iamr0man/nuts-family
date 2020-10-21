@@ -6,6 +6,7 @@
       <CartItem v-for="v in cart.products" :key="v.id" :item="v" />
     </div>
     <v-btn
+      v-if="$route.name === 'cart'"
       :disabled="!isExist"
       color="primary"
       class="cart__action"
@@ -18,10 +19,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import CartItem from '../components/CartItem.vue'
+import priceMixin from '~/mixins/priceMixin'
 export default {
   components: {
     CartItem
   },
+  mixins: [priceMixin],
   props: {
     headerName: {
       type: String,
@@ -34,9 +37,6 @@ export default {
   computed: {
     ...mapGetters('auth', { profile: 'getProfile' }),
     ...mapGetters('cart', { cart: 'getCart' }),
-    isExist() {
-      return Boolean(this.cart.products.length)
-    },
     totalPrice() {
       return this.cart.products.reduce(
         (acc, curr) => acc + curr.amount * curr.product.price[curr.weight],
@@ -46,7 +46,9 @@ export default {
   },
   methods: {
     async checkout() {
-      await this.$router.push('/checkout')
+      if (this.$route.name === 'cart') {
+        await this.$router.push('/checkout')
+      }
     }
   }
 }
@@ -69,9 +71,6 @@ export default {
     z-index: 1;
     font-weight: bold;
     font-size: 18px;
-  }
-  &__action {
-    border-radius: 30px;
   }
 }
 

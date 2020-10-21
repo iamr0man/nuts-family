@@ -26,6 +26,9 @@ export default {
       const sum = this.item.reviews.reduce((acc, curr) => acc + curr.rating, 0)
       return sum / this.item.reviews.length
     },
+    isExist() {
+      return Boolean(this.cart.products.length)
+    },
     isExistInCart() {
       return this.cart.products.find((v) => v.productId === this.item.id)
     }

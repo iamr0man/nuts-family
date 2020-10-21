@@ -8,7 +8,11 @@
     </div>
     <div class="item__row">
       <p class="item__label">Кількість:</p>
-      <v-text-field v-model="amount" class="item__field" />
+      <v-text-field
+        v-model="amount"
+        class="item__field"
+        @change="updateAmount"
+      />
     </div>
     <div class="item__price">{{ price }} грн.</div>
     <div class="item__remove" @click="removeItem" />
@@ -33,6 +37,12 @@ export default {
     this.amount = this.item.amount
   },
   methods: {
+    async updateAmount() {
+      await this.$store.dispatch('cart/UPDATE_CART_PRODUCT', {
+        id: this.item.id,
+        amount: this.amount
+      })
+    },
     async removeItem() {
       await this.$store.dispatch('cart/REMOVE_CART_PRODUCT', this.item.id)
       // this.$emit('updateProducts', this.cart)
