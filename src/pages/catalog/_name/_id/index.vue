@@ -75,7 +75,7 @@
             <v-expansion-panel-content>
               <v-row class="mt-3" justify="center">
                 <v-dialog
-                  v-if="user"
+                  v-if="user.loggedIn"
                   v-model="dialog"
                   fullscreen
                   hide-overlay

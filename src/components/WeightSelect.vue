@@ -40,6 +40,7 @@ export default {
     padding: 3px 5px;
     color: #3cb640;
     font-size: 14px;
+    cursor: pointer;
   }
 
   &__item--active {

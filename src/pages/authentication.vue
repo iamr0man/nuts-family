@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="authentication">
     <v-card-text class="pa-5">
       <RegistrationComponent
         v-if="!isRegistered"
@@ -33,4 +33,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.authentication {
+  max-width: 600px;
+}
+</style>

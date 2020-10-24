@@ -99,7 +99,8 @@ export const actions = {
     const profileData = await profile.data()
     commit('SET_PROFILE', profileData)
   },
-  async CREATE_ORDER(order) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async CREATE_ORDER(ctx, order) {
     await db
       .collection('orders')
       .doc(order.id)

@@ -13,7 +13,7 @@
         <div v-show="$vuetify.breakpoint.mdAndUp">
           <v-toolbar-items>
             <v-btn v-for="item in menu" :key="item.id" text class="white--text">
-              <div @click="item.click">
+              <div @click="item.click" class="default__link">
                 {{ item.title }}
               </div>
             </v-btn>
@@ -41,7 +41,9 @@
             <v-list-item-action>
               <v-icon light :class="item.icon" />
             </v-list-item-action>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="default__link">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -128,7 +130,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 body {
   background-color: #fff;
 }
@@ -147,6 +149,12 @@ body {
 
 .v-container {
   background: linear-gradient(to right, #9b9b9b, #d0d0d0);
+}
+
+.default {
+  &__link {
+    cursor: pointer;
+  }
 }
 /* .v-toolbar {
   box-shadow: none !important;

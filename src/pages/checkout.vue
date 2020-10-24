@@ -45,6 +45,7 @@
             v-else-if="deliveryMethod === 'Кур`єрська доставка по Києву'"
             class="block__nested-fields"
           >
+            <v-text-field v-model="warehouse.city" label="Місто" />
             <v-text-field v-model="address.address" label="Вулиця" />
             <v-row>
               <v-col cols="6">
@@ -147,7 +148,7 @@ export default {
   },
   methods: {
     async checkout() {
-      const data = {
+      const order = {
         id: uuidv4(),
         surname: this.surname,
         name: this.name,
@@ -156,9 +157,14 @@ export default {
         address:
           this.deliveryMethod === 'Нова Пошта' ? this.warehouse : this.address,
         delivery: this.deliveryMethod,
-        pay: this.payMethod
+        pay: this.payMethod,
+        consult: this.consult,
+        speakingLanguage: this.profile.speakingLanguage || 'Не вказано',
+        products: this.cart.products
       }
-      await this.$store.dispatch('auth/CREATE_ORDER', data)
+      await this.$store.dispatch('auth/CREATE_ORDER', order)
+      await this.$store.dispatch('cart/CLEAR_CART_PRODUCTS')
+      await this.$router.push({ name: 'order' })
     }
   },
   mounted() {
@@ -186,6 +192,9 @@ export default {
   &__left {
     display: flex;
     flex-direction: column;
+  }
+  &__block {
+    max-width: 515px;
   }
   &__action {
     border-radius: 30px;

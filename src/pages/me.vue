@@ -50,6 +50,7 @@ export default {
     margin: 10px 0;
     border: 1px solid #a0a0a0;
     border-radius: 10px;
+    max-width: 515px;
     .block__header {
       display: flex;
       justify-content: space-between;

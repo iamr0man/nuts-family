@@ -8,7 +8,8 @@ export default ({ app, store }) => {
       'catalog-name',
       'catalog-name-id',
       'cart',
-      'checkout'
+      'checkout',
+      'order'
     ]
     const authRequired = !publicPages.includes(to.name)
     const loggedIn = store.getters['auth/getUser'].loggedIn

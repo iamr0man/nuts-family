@@ -123,6 +123,25 @@ export const actions = {
       localCart = JSON.parse(localStorage.getItem('localCart'))
       commit('SET_CART', await handleResponse(localCart))
     }
+  },
+  async CLEAR_CART_PRODUCTS({ state, commit }) {
+    if (state.cart.userId) {
+      const cartRef = await db.collection('cart').doc(state.cart.userId)
+      await cartRef.update({
+        products: []
+      })
+
+      const cart = await cartRef.get()
+      const cartData = await cart.data()
+      commit('SET_CART', await handleResponse(cartData))
+    } else {
+      let localCart = JSON.parse(localStorage.getItem('localCart'))
+      localCart.products = []
+
+      localStorage.setItem('localCart', JSON.stringify(localCart))
+      localCart = JSON.parse(localStorage.getItem('localCart'))
+      commit('SET_CART', await handleResponse(localCart))
+    }
   }
 }
 
