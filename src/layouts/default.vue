@@ -13,7 +13,7 @@
         <div v-show="$vuetify.breakpoint.mdAndUp">
           <v-toolbar-items>
             <v-btn v-for="item in menu" :key="item.id" text class="white--text">
-              <div @click="item.click" class="default__link">
+              <div class="default__link" @click="item.click">
                 {{ item.title }}
               </div>
             </v-btn>

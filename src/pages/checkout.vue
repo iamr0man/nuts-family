@@ -1,9 +1,9 @@
 <template>
   <div class="checkout">
-    <div class="checkout__left">
+    <v-form ref="form" v-model="valid" class="checkout__left">
       <v-text-field v-model="surname" :rules="requiredRule" label="Прізвище" />
       <v-text-field v-model="name" :rules="requiredRule" label="Ім'я" />
-      <v-text-field v-model="email" label="Ел. пошта" />
+      <v-text-field v-model="email" :rules="emailRules" label="Ел. пошта" />
       <v-text-field
         v-model="phoneNumber"
         :rules="requiredRule"
@@ -15,7 +15,7 @@
       />
       <div class="checkout__block">
         <h3 class="block__header">Оплата</h3>
-        <v-radio-group v-model="payMethod">
+        <v-radio-group v-model="payMethod" :rules="requiredRule">
           <v-radio
             v-for="(n, i) in payMethods"
             :key="i"
@@ -28,7 +28,7 @@
       </div>
       <div class="checkout__block">
         <h3 class="block__header">Доставка</h3>
-        <v-radio-group v-model="deliveryMethod">
+        <v-radio-group v-model="deliveryMethod" :rules="requiredRule">
           <v-radio
             v-for="(n, i) in deliveryMethods"
             :key="i"
@@ -38,31 +38,56 @@
         </v-radio-group>
         <div class="block__hint">
           <div v-if="deliveryMethod === 'Нова Пошта'" class="block__addresses">
-            <v-text-field v-model="warehouse.city" label="Місто" />
-            <v-text-field v-model="warehouse.warehouse" label="Відділення" />
+            <v-text-field
+              v-model="warehouse.city"
+              :rules="requiredRule"
+              label="Місто"
+            />
+            <v-text-field
+              v-model="warehouse.warehouse"
+              :rules="requiredRule"
+              label="Відділення"
+            />
           </div>
           <div
             v-else-if="deliveryMethod === 'Кур`єрська доставка по Києву'"
             class="block__nested-fields"
           >
-            <v-text-field v-model="warehouse.city" label="Місто" />
-            <v-text-field v-model="address.address" label="Вулиця" />
+            <v-text-field
+              v-model="warehouse.city"
+              :rules="requiredRule"
+              label="Місто"
+            />
+            <v-text-field
+              v-model="address.address"
+              :rules="requiredRule"
+              label="Вулиця"
+            />
             <v-row>
               <v-col cols="6">
-                <v-text-field v-model="address.house" label="Будинок" />
+                <v-text-field
+                  v-model="address.house"
+                  :rules="requiredRule"
+                  label="Будинок"
+                />
               </v-col>
               <v-col cols="6">
-                <v-text-field v-model="address.apartment" label="Квартира" />
+                <v-text-field
+                  v-model="address.apartment"
+                  :rules="requiredRule"
+                  label="Квартира"
+                />
               </v-col>
             </v-row>
             <v-text-field
               v-model="address.comment"
+              :rules="requiredRule"
               label="Коментар до адресу"
             />
           </div>
         </div>
       </div>
-    </div>
+    </v-form>
     <Cart class="checkout__right" header-name="Товари в корзині" />
     <v-btn
       :disabled="!isExist"
@@ -85,10 +110,15 @@ export default {
   },
   mixins: [priceMixin],
   data: () => ({
+    valid: false,
     requiredRule: [(v) => !!v || 'Це поле повинно бути заповене'],
     surname: '',
     name: '',
     email: '',
+    emailRules: [
+      (v) => !!v || 'Це поле повинно бути заповнене',
+      (v) => /.+@.+\..+/.test(v) || 'Заповніть це поле в правильному форматі'
+    ],
     phoneNumber: '',
     address: {
       city: '',
@@ -146,27 +176,6 @@ export default {
     }),
     ...mapGetters('cart', { cart: 'getCart' })
   },
-  methods: {
-    async checkout() {
-      const order = {
-        id: uuidv4(),
-        surname: this.surname,
-        name: this.name,
-        email: this.email,
-        phoneNumber: this.phoneNumber,
-        address:
-          this.deliveryMethod === 'Нова Пошта' ? this.warehouse : this.address,
-        delivery: this.deliveryMethod,
-        pay: this.payMethod,
-        consult: this.consult,
-        speakingLanguage: this.profile.speakingLanguage || 'Не вказано',
-        products: this.cart.products
-      }
-      await this.$store.dispatch('auth/CREATE_ORDER', order)
-      await this.$store.dispatch('cart/CLEAR_CART_PRODUCTS')
-      await this.$router.push({ name: 'order' })
-    }
-  },
   mounted() {
     if (this.user.loggedIn) {
       this.surname = this.user.data.displayName.split(' ')[0]
@@ -179,6 +188,36 @@ export default {
     }
     if (this.warehouseProfile) {
       this.warehouse = this.warehouseProfile
+    }
+  },
+  methods: {
+    async checkout() {
+      if (this.$refs.form.validate()) {
+        const order = {
+          id: uuidv4(),
+          surname: this.surname,
+          name: this.name,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          address:
+            this.deliveryMethod === 'Нова Пошта'
+              ? this.warehouse
+              : this.address,
+          delivery: this.deliveryMethod,
+          pay: this.payMethod,
+          consult: this.consult,
+          speakingLanguage: this.profile.speakingLanguage || 'Не вказано',
+          products: this.cart.products
+        }
+        await this.$store.dispatch('auth/CREATE_ORDER', order)
+        await this.$store.dispatch('cart/CLEAR_CART_PRODUCTS')
+        await this.$router.push({ name: 'order' })
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }
     }
   }
 }

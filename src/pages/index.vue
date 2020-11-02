@@ -4,8 +4,9 @@
       <v-col
         v-for="v in categories"
         :key="v.value"
+        class="home__card"
         cols="12"
-        sm="6"
+        sm="12"
         md="4"
         lg="3"
       >
@@ -68,16 +69,29 @@ a:active {
   text-decoration: none;
 }
 .home {
-  &__category {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    border-radius: 50px;
-    background: #008080;
-    box-shadow: 0 0 20px #006d6d, 0 0 20px #009393;
-    .name {
-      font-weight: 800;
+  &__card {
+    margin: 10px;
+    border-radius: 40px;
+    background-size: cover;
+    &:nth-child(1) {
+      background-image: url('../static/nuts.jpg');
+    }
+    &:nth-child(2) {
+      background-image: url('../static/druid-fruits.jpg');
+    }
+    &:nth-child(3) {
+      background-image: url('../static/box.jpg');
+    }
+    .home__category {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      border-radius: 50px;
+      .name {
+        font-size: 24px;
+        font-weight: 800;
+      }
     }
   }
 }
