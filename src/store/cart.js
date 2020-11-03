@@ -40,9 +40,7 @@ export const actions = {
         .collection('cart')
         .doc(userId)
         .set(cartData)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   },
   async GET_CART({ commit }, user) {
     if (user) {

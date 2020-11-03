@@ -74,9 +74,7 @@ export const actions = {
         .collection('users')
         .doc(userData.uid)
         .set(userData)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,9 +91,7 @@ export const actions = {
         .collection('profiles')
         .doc(userId)
         .set(profileData)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   },
   async REMOVE_PROFILE_ADDRESS({ state, commit }, addressId) {
     const profileRef = await db.collection('profiles').doc(state.user.data.uid)
