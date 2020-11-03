@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <img :src="item.product.image" alt="" class="item__image" />
+    <img :src="item.product.image[0]" alt="" class="item__image" />
     <h2 class="item__name">{{ item.product.name }}</h2>
     <div class="item__row">
       <p class="item__label">Вага:</p>

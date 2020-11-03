@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="link" class="item-card">
-    <img class="item-card__image" :src="item.image" alt="image" />
+    <img class="item-card__image" :src="item.image[0]" alt="image" />
     <h3 class="item-card__name">
       {{ item.name }}
     </h3>
@@ -87,7 +87,7 @@ export default {
 
 @media screen and (min-width: 868px) {
   .item-card {
-    width: 24%;
+    width: 22%;
     margin: 0 10px;
   }
 }

@@ -2,7 +2,15 @@
   <div class="product-page">
     <h1 class="product-page__name">{{ item.name }}</h1>
     <div class="product-page__wrapper">
-      <img class="product-page__image" :src="item.image" alt="image" />
+      <v-carousel cycle hide-delimiter-background show-arrows-on-hover>
+        <v-carousel-item v-for="(v, i) in item.image" :key="i">
+          <img
+            class="product-page__wrapper-item"
+            :src="v"
+            alt="product image"
+          />
+        </v-carousel-item>
+      </v-carousel>
       <div class="product-page__info">
         <h1 class="product-page__name">{{ item.name }}</h1>
         <div class="product-page__numbers">
@@ -93,36 +101,41 @@
                     </v-btn>
                   </template>
                   <v-card class="pa-4">
-                    <v-toolbar dark color="primary">
-                      <v-btn icon dark @click="dialog = false">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
-                      <v-toolbar-title>Написати відгук</v-toolbar-title>
-                    </v-toolbar>
-                    <div class="product-page__input">
-                      <p class="product-page__label label">Рейтинг:</p>
-                      <v-rating v-model="rating" />
-                    </div>
-                    <div class="product-page__input">
-                      <p class="product-page__label label">Коментар:</p>
-                      <v-textarea v-model="comment" />
-                    </div>
-                    <div class="product-page__input">
-                      <p class="product-page__label label">
-                        Ваше ім'я та прізвище:
-                      </p>
-                      <v-text-field v-model="displayName" />
-                    </div>
-                    <div class="product-page__input">
-                      <p class="product-page__label label">
-                        Електронна пошта:
-                      </p>
-                      <v-text-field v-model="email" />
-                    </div>
-                    <v-btn>Скасувати</v-btn>
-                    <v-btn color="primary" @click="postComment"
-                      >Залишити відгук</v-btn
-                    >
+                    <v-form refs="comments">
+                      <v-toolbar dark color="primary">
+                        <v-btn icon dark @click="dialog = false">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>Написати відгук</v-toolbar-title>
+                      </v-toolbar>
+                      <div class="product-page__input">
+                        <p class="product-page__label label">Рейтинг:</p>
+                        <v-rating v-model="rating" :rules="requiredRule" />
+                      </div>
+                      <div class="product-page__input">
+                        <p class="product-page__label label">Коментар:</p>
+                        <v-textarea v-model="comment" :rules="requiredRule" />
+                      </div>
+                      <div class="product-page__input">
+                        <p class="product-page__label label">
+                          Ваше ім'я та прізвище:
+                        </p>
+                        <v-text-field
+                          v-model="displayName"
+                          :rules="requiredRule"
+                        />
+                      </div>
+                      <div class="product-page__input">
+                        <p class="product-page__label label">
+                          Електронна пошта:
+                        </p>
+                        <v-text-field v-model="email" :rules="requiredRule" />
+                      </div>
+                      <v-btn @click="dialog = false">Скасувати</v-btn>
+                      <v-btn color="primary" @click="postComment"
+                        >Залишити відгук</v-btn
+                      >
+                    </v-form>
                   </v-card>
                 </v-dialog>
               </v-row>
@@ -157,6 +170,7 @@ export default {
     }
   },
   data: () => ({
+    requiredRule: [(v) => !!v || 'Це поле повинно бути заповене'],
     commentContent: null,
     additional: ['Відгуки', 'Опис'],
     dialog: false,
@@ -193,16 +207,18 @@ export default {
       this.dialog = false
     },
     async postComment() {
-      const userName = this.user.data.displayName
-      const commentData = {
-        itemId: this.itemId,
-        userName,
-        rating: this.rating,
-        comment: this.comment,
-        timestamp: new Date().getTime()
+      if (this.$refs.review.validate()) {
+        const userName = this.user.data.displayName
+        const commentData = {
+          itemId: this.itemId,
+          userName,
+          rating: this.rating,
+          comment: this.comment,
+          timestamp: new Date().getTime()
+        }
+        await this.$store.dispatch('category/POST_COMMENT', commentData)
+        this.initFields()
       }
-      await this.$store.dispatch('category/POST_COMMENT', commentData)
-      this.initFields()
     },
     async addToCart() {
       const data = {
@@ -243,6 +259,7 @@ a.comment-link {
 .product-page {
   $self: &;
   &__wrapper {
+    overflow: hidden;
     #{$self}__image {
       width: 100%;
       width: 460px;
