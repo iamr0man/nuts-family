@@ -4,11 +4,7 @@
     <div class="product-page__wrapper">
       <v-carousel cycle hide-delimiter-background show-arrows-on-hover>
         <v-carousel-item v-for="(v, i) in item.image" :key="i">
-          <img
-            class="product-page__wrapper-item"
-            :src="v"
-            alt="product image"
-          />
+          <img class="product-page__image" :src="v" alt="product image" />
         </v-carousel-item>
       </v-carousel>
       <div class="product-page__info">
@@ -262,7 +258,6 @@ a.comment-link {
     overflow: hidden;
     #{$self}__image {
       width: 100%;
-      width: 460px;
     }
     #{$self}__info {
       #{$self}__name {
