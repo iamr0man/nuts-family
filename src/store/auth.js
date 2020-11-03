@@ -69,25 +69,33 @@ export const actions = {
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_USER_INSTANCE({ commit }, userData) {
-    await db
-      .collection('users')
-      .doc(userData.uid)
-      .set(userData)
+    try {
+      await db
+        .collection('users')
+        .doc(userData.uid)
+        .set(userData)
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async CREATE_PROFILE({ state }, userId) {
-    const profileData = {
-      id: uuidv4(),
-      userId,
-      sex: null,
-      speakingLanguage: null,
-      addresses: []
+    try {
+      const profileData = {
+        id: uuidv4(),
+        userId,
+        sex: null,
+        speakingLanguage: null,
+        addresses: []
+      }
+      await db
+        .collection('profiles')
+        .doc(userId)
+        .set(profileData)
+    } catch (e) {
+      console.log(e)
     }
-    await db
-      .collection('profiles')
-      .doc(userId)
-      .set(profileData)
   },
   async REMOVE_PROFILE_ADDRESS({ state, commit }, addressId) {
     const profileRef = await db.collection('profiles').doc(state.user.data.uid)

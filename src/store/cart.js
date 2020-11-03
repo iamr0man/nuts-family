@@ -28,16 +28,21 @@ export const getters = {
 }
 
 export const actions = {
-  async CREATE_CART(userId) {
-    const cartData = {
-      id: uuidv4(),
-      userId,
-      products: []
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async CREATE_CART(ctx, userId) {
+    try {
+      const cartData = {
+        id: uuidv4(),
+        userId,
+        products: []
+      }
+      await db
+        .collection('cart')
+        .doc(userId)
+        .set(cartData)
+    } catch (e) {
+      console.log(e)
     }
-    await db
-      .collection('cart')
-      .doc(userId)
-      .set(cartData)
   },
   async GET_CART({ commit }, user) {
     if (user) {

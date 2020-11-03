@@ -30,7 +30,11 @@ export default {
       return Boolean(this.cart.products.length)
     },
     isExistInCart() {
-      return this.cart.products.find((v) => v.productId === this.item.id)
+      if (this.cart) {
+        return this.cart.products.find((v) => v.productId === this.item.id)
+      } else {
+        return false
+      }
     }
   },
   methods: {

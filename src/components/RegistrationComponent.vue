@@ -102,8 +102,12 @@ export default {
         await this.$store.dispatch('auth/CREATE_PROFILE', userInstanceInfo.uid)
         await this.$store.dispatch('cart/CREATE_CART', userInstanceInfo.uid)
         await this.$router.push('/')
+        window.location.reload(false)
       } catch (error) {
         this.snackbar = true
+        alert('Something went wrong, try later :(')
+        await this.$router.push('/')
+        window.location.reload(false)
         // Handle Errors here.
         // const errorCode = error.code
         // const errorMessage = error.message

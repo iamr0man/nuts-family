@@ -256,6 +256,9 @@ a.comment-link {
   $self: &;
   &__wrapper {
     overflow: hidden;
+    .v-window {
+      height: 250px !important;
+    }
     #{$self}__image {
       width: 100%;
     }
