@@ -30,6 +30,28 @@
         <nuxt />
       </v-container>
     </v-main>
+
+    <footer class="footer">
+      <div class="footer__phone-numbers footer__block">
+        <p>+380930496269</p>
+        <p>+380967743498</p>
+      </div>
+      <div class="footer__email footer__block">
+        <p>nutsfamily20@gmail.com</p>
+      </div>
+      <div class="footer__socials">
+        <p>
+          instagram:
+          <a href="https://www.instagram.com/nuts_family_2020/"
+            >@nuts_family_2020</a
+          >
+        </p>
+      </div>
+      <div class="footer__name footer__block">
+        <p>fb: Орехи Сухофрукты (Nuts Family)</p>
+      </div>
+    </footer>
+
     <client-only>
       <v-navigation-drawer v-model="rightDrawer" right temporary fixed>
         <v-list>
@@ -192,4 +214,27 @@ body {
   transform-origin: left bottom;
 } */
 /* Rectangle 4 */
+
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background: #1f1f1f;
+  color: #fff;
+  box-shadow: -10px -10px 30px 2px #1f1f1f;
+  &__block {
+    margin-top: 20px;
+  }
+}
+@media screen and (min-width: 868px) {
+  .footer {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
 </style>
