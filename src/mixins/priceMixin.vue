@@ -20,7 +20,11 @@ export default {
       return Object.entries(this.item.price)
     },
     price() {
-      return this.item.price[this.weight] * Math.abs(this.amount)
+      if (this.$route.params.name === 'gift-sets') {
+        return 'Від 190'
+      } else {
+        return this.item.price[this.weight] * Math.abs(this.amount)
+      }
     },
     countAvgStars() {
       const sum = this.item.reviews.reduce((acc, curr) => acc + curr.rating, 0)

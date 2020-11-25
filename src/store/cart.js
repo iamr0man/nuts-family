@@ -20,7 +20,9 @@ async function handleResponse(data) {
 }
 
 export const state = () => ({
-  cart: {}
+  cart: {
+    products: []
+  }
 })
 
 export const getters = {
@@ -48,7 +50,7 @@ export const actions = {
       const cart = await cartRef.get()
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
-    } else {
+    } else if (process.browser) {
       let localCart = JSON.parse(localStorage.getItem('localCart'))
       if (!localCart) {
         localStorage.setItem(
@@ -75,7 +77,7 @@ export const actions = {
       const cart = await cartRef.get()
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
-    } else {
+    } else if (process.browser) {
       let localCart = JSON.parse(localStorage.getItem('localCart'))
       localCart.products.push(data)
 
@@ -99,7 +101,7 @@ export const actions = {
       const cart = await cartRef.get()
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
-    } else {
+    } else if (process.browser) {
       let localCart = JSON.parse(localStorage.getItem('localCart'))
       const index = localCart.products.findIndex((v) => v.id === item.id)
       localCart.products[index].amount = +item.amount
@@ -118,7 +120,7 @@ export const actions = {
       const cart = await cartRef.get()
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
-    } else {
+    } else if (process.browser) {
       let localCart = JSON.parse(localStorage.getItem('localCart'))
       localCart.products = localCart.products.filter((v) => v.id !== productId)
 
@@ -137,7 +139,7 @@ export const actions = {
       const cart = await cartRef.get()
       const cartData = await cart.data()
       commit('SET_CART', await handleResponse(cartData))
-    } else {
+    } else if (process.browser) {
       let localCart = JSON.parse(localStorage.getItem('localCart'))
       localCart.products = []
 
