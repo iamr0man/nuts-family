@@ -26,4 +26,6 @@ async function handleRequest(req, res) {
   await nuxt.render(req, res);
 }
 
-exports.ssrapp = functions.https.onRequest(handleRequest);
+exports.ssrapp = functions
+                  .region('europe-west1')
+                  .https.onRequest(handleRequest);
