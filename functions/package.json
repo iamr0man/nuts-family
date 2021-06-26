@@ -12,7 +12,7 @@
     "node": "8"
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^0.3.6",
+    "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxt/typescript-build": "0.5.5",
     "@vue/composition-api": "^0.3.4",
     "@nuxt/http": "^0.3.8",
